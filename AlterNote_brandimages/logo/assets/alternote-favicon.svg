@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" role="img" aria-label="AlterNote">
+<rect width="32" height="32" rx="7.52" fill="#0f172a"></rect>
+<g stroke="#d9385e" stroke-width="2.26" stroke-linecap="round" fill="none">
+  <line x1="19.67" y1="16" x2="25.6" y2="16"></line>
+  <line x1="18.6" y1="18.6" x2="20.99" y2="20.99"></line>
+  <line x1="16" y1="19.67" x2="16" y2="25.6"></line>
+  <line x1="13.4" y1="18.6" x2="11.01" y2="20.99"></line>
+  <line x1="12.33" y1="16" x2="6.4" y2="16"></line>
+  <line x1="13.4" y1="13.4" x2="11.01" y2="11.01"></line>
+  <line x1="16" y1="12.33" x2="16" y2="6.4"></line>
+  <line x1="18.6" y1="13.4" x2="20.99" y2="11.01"></line>
+</g>
+</svg>

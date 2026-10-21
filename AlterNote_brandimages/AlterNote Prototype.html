@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlterNote — Interactive Prototype</title>
+<link rel="icon" type="image/svg+xml" href="logo/assets/alternote-favicon.svg">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Serif+Display&family=Hanken+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body,#root{height:100%;overflow:hidden}
+  body{font-family:'DM Sans',sans-serif;background:#1e293b}
+  input,textarea,select,button{font-family:'DM Sans',sans-serif}
+
+  /* Slide animations */
+  @keyframes slideInRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
+  @keyframes slideInLeft{from{transform:translateX(-22%)}to{transform:translateX(0)}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+  .slide-fwd{animation:slideInRight 300ms cubic-bezier(.25,.46,.45,.94) both}
+  .slide-back{animation:slideInLeft 300ms cubic-bezier(.25,.46,.45,.94) both}
+  .fade-in{animation:fadeIn 250ms ease both}
+
+  /* Scrollbar hide */
+  *::-webkit-scrollbar{width:0;height:0}
+
+  /* Tap / click states */
+  button{transition:opacity .1s}
+  button:active{opacity:.75}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<!-- Load in strict dependency order: components → state → screens → main -->
+<script type="text/babel" src="prototype/components.jsx"></script>
+<script type="text/babel" src="prototype/state.jsx"></script>
+<script type="text/babel" src="prototype/screens-onboarding.jsx"></script>
+<script type="text/babel" src="prototype/screens-admin.jsx"></script>
+<script type="text/babel" src="prototype/screens-order.jsx"></script>
+<script type="text/babel" src="prototype/screens-tailor.jsx"></script>
+<script type="text/babel" src="prototype/main.jsx"></script>
+</body>
+</html>

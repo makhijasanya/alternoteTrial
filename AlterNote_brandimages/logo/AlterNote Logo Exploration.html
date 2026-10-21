@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlterNote — Logo Exploration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body,#root{height:100%}
+  body{font-family:'Hanken Grotesk',sans-serif;background:#e9e4dc}
+  .cap{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#94a3b8;font-weight:600}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="marks.jsx"></script>
+<script type="text/babel">
+const { IconTile, NotchMark, StitchStar, TagMark, HybridMark, Wordmark, ROSE, ROSE_SOFT, INK, PAPER, PLUM, CREAMTEXT } = window;
+
+// shared frame helpers ------------------------------------------------------
+const Frame = ({ bg = '#fff', children, pad = 0, center = true }) => (
+  <div style={{ width:'100%', height:'100%', background:bg, padding:pad,
+    display:'flex', alignItems:'center', justifyContent: center?'center':'flex-start',
+    flexDirection:'column', gap:18 }}>{children}</div>
+);
+const Cap = ({ children, color='#94a3b8' }) => (
+  <div className="cap" style={{ color, position:'absolute', top:14, left:16 }}>{children}</div>
+);
+
+// =================================================================== HYBRID (2+4)
+const HybIcon = () => (
+  <Frame bg="#fff"><Cap>App Icon</Cap>
+    <IconTile bg={INK}><HybridMark size={86} stroke="#fff" star={ROSE} sw={6} /></IconTile>
+  </Frame>
+);
+const HybLockup = () => (
+  <Frame bg={PAPER}><Cap>Primary Lockup</Cap>
+    <div style={{ display:'flex', alignItems:'center', gap:14 }}>
+      <IconTile bg={INK} size={62}><HybridMark size={42} stroke="#fff" star={ROSE} sw={6.5} /></IconTile>
+      <Wordmark family="'Hanken Grotesk'" size={40} weight={700} color={INK}
+        text="AlterNote" tracking="-0.035em" />
+    </div>
+    <div style={{ fontFamily:"'DM Sans'", fontSize:12.5, color:'#94a3b8', letterSpacing:'.02em' }}>
+      Every stitch, noted
+    </div>
+  </Frame>
+);
+const HybVars = () => (
+  <Frame bg={INK}><Cap color="#64748b">On Dark · Mono · Favicon</Cap>
+    <Wordmark family="'Hanken Grotesk'" size={30} weight={700} color="#fff" text="AlterNote" tracking="-0.035em" />
+    <div style={{ display:'flex', alignItems:'center', gap:16 }}>
+      <IconTile bg={INK} size={46}><HybridMark size={32} stroke="#fff" star={ROSE} sw={6.5} /></IconTile>
+      <IconTile bg={ROSE} size={46}><HybridMark size={32} stroke="#fff" star="#fff" sw={6.5} /></IconTile>
+      <IconTile bg="#fff" size={46}><HybridMark size={32} stroke={INK} star={ROSE} sw={6.5} /></IconTile>
+      <IconTile bg={INK} size={30}><HybridMark size={22} stroke="#fff" star={ROSE} sw={8} /></IconTile>
+    </div>
+  </Frame>
+);
+
+// =================================================================== NOTCH
+const NotchIcon = () => (
+  <Frame bg="#fff"><Cap>App Icon</Cap>
+    <IconTile bg={ROSE}><NotchMark size={84} stroke="#fff" /></IconTile>
+  </Frame>
+);
+const NotchLockup = () => (
+  <Frame bg={PAPER}><Cap>Primary Lockup</Cap>
+    <div style={{ display:'flex', alignItems:'center', gap:16 }}>
+      <IconTile bg={ROSE} size={62}><NotchMark size={40} stroke="#fff" sw={9} /></IconTile>
+      <Wordmark family="'Space Grotesk'" size={40} weight={600} color={INK}
+        text="alternote" tracking="-0.03em" />
+    </div>
+    <div style={{ fontFamily:"'DM Sans'", fontSize:12.5, color:'#94a3b8', letterSpacing:'.02em' }}>
+      Your boutique, beautifully managed
+    </div>
+  </Frame>
+);
+const NotchVars = () => (
+  <Frame bg={INK}><Cap color="#64748b">On Dark · Mono · Favicon</Cap>
+    <div style={{ display:'flex', alignItems:'center', gap:22 }}>
+      <Wordmark family="'Space Grotesk'" size={30} weight={600} color="#fff" text="alternote" tracking="-0.03em" />
+    </div>
+    <div style={{ display:'flex', alignItems:'center', gap:16 }}>
+      <IconTile bg="#1e293b" size={46}><NotchMark size={30} stroke={ROSE} sw={9} /></IconTile>
+      <IconTile bg="#fff" size={46}><NotchMark size={30} stroke={INK} sw={9} /></IconTile>
+      <IconTile bg={ROSE} size={46}><NotchMark size={30} stroke="#fff" sw={9} /></IconTile>
+      <IconTile bg="#1e293b" size={30} ><NotchMark size={20} stroke="#fff" sw={11} /></IconTile>
+    </div>
+  </Frame>
+);
+
+// =================================================================== STITCH
+const StitchIcon = () => (
+  <Frame bg="#fff"><Cap>App Icon</Cap>
+    <IconTile bg={INK}><StitchStar size={86} stroke={ROSE} /></IconTile>
+  </Frame>
+);
+const StitchLockup = () => (
+  <Frame bg={PAPER}><Cap>Primary Lockup</Cap>
+    <div style={{ display:'flex', alignItems:'center', gap:14 }}>
+      <StitchStar size={44} stroke={ROSE} sw={8.5} />
+      <Wordmark family="'Hanken Grotesk'" size={40} weight={700} color={INK}
+        text="AlterNote" tracking="-0.035em" />
+    </div>
+    <div style={{ fontFamily:"'DM Sans'", fontSize:12.5, color:'#94a3b8', letterSpacing:'.02em' }}>
+      Every stitch, noted
+    </div>
+  </Frame>
+);
+const StitchVars = () => (
+  <Frame bg={INK}><Cap color="#64748b">On Dark · Mono · Favicon</Cap>
+    <Wordmark family="'Hanken Grotesk'" size={30} weight={700} color="#fff" text="AlterNote" tracking="-0.035em" />
+    <div style={{ display:'flex', alignItems:'center', gap:16 }}>
+      <IconTile bg={PLUM} size={46}><StitchStar size={30} stroke={CREAMTEXT} sw={8.5} /></IconTile>
+      <IconTile bg="#fff" size={46}><StitchStar size={30} stroke={PLUM} sw={8.5} /></IconTile>
+      <IconTile bg="#1e293b" size={46}><StitchStar size={30} stroke={ROSE} sw={8.5} /></IconTile>
+      <IconTile bg={PLUM} size={30}><StitchStar size={22} stroke={CREAMTEXT} sw={10} /></IconTile>
+    </div>
+  </Frame>
+);
+
+// =================================================================== EDITORIAL
+const EditIcon = () => (
+  <Frame bg="#fff"><Cap>App Icon</Cap>
+    <IconTile bg={PAPER} glow="0 18px 40px -16px rgba(23,19,26,.25), inset 0 0 0 1px rgba(23,19,26,.06)">
+      <span style={{ fontFamily:"'Instrument Serif'", fontSize:92, color:INK, lineHeight:1, position:'relative' }}>
+        a<span style={{ position:'absolute', top:10, right:-2, width:11, height:11, borderRadius:'50%', background:ROSE }}></span>
+      </span>
+    </IconTile>
+  </Frame>
+);
+const EditLockup = () => (
+  <Frame bg={INK}><Cap color="#64748b">Primary Lockup</Cap>
+    <div style={{ fontFamily:"'Instrument Serif'", fontSize:56, color:'#f1f5f9', lineHeight:1, letterSpacing:'.01em', position:'relative' }}>
+      alternote<span style={{ position:'absolute', right:-3, top:6, width:9, height:9, borderRadius:'50%', background:ROSE }}></span>
+    </div>
+    <div style={{ fontFamily:"'DM Sans'", fontSize:11, color:'#64748b', letterSpacing:'.22em', textTransform:'uppercase' }}>
+      The atelier register
+    </div>
+  </Frame>
+);
+const EditVars = () => (
+  <Frame bg={PAPER}><Cap>Light · Italic · Favicon</Cap>
+    <div style={{ fontFamily:"'Instrument Serif'", fontSize:46, color:INK, lineHeight:1 }}>alternote</div>
+    <div style={{ display:'flex', alignItems:'center', gap:16 }}>
+      <div style={{ fontFamily:"'Instrument Serif'", fontStyle:'italic', fontSize:34, color:PLUM }}>alternote</div>
+      <IconTile bg={INK} size={44}>
+        <span style={{ fontFamily:"'Instrument Serif'", fontSize:32, color:'#f1f5f9', position:'relative' }}>a
+        <span style={{ position:'absolute', top:4, right:-3, width:6, height:6, borderRadius:'50%', background:ROSE }}></span></span>
+      </IconTile>
+    </div>
+  </Frame>
+);
+
+// =================================================================== TAG
+const TagIcon = () => (
+  <Frame bg="#fff"><Cap>App Icon</Cap>
+    <IconTile bg={ROSE_SOFT} glow="0 18px 40px -16px rgba(217,56,94,.3)"><TagMark size={84} stroke={ROSE} /></IconTile>
+  </Frame>
+);
+const TagLockup = () => (
+  <Frame bg={PAPER}><Cap>Primary Lockup</Cap>
+    <div style={{ display:'flex', alignItems:'center', gap:14 }}>
+      <IconTile bg={ROSE} size={60}><TagMark size={40} stroke="#fff" sw={7.5} /></IconTile>
+      <Wordmark family="'Space Grotesk'" size={38} weight={500} color={INK} text="alternote" tracking="-0.02em" />
+    </div>
+    <div style={{ fontFamily:"'DM Sans'", fontSize:12.5, color:'#94a3b8', letterSpacing:'.02em' }}>
+      Tag it. Track it. Tailor it.
+    </div>
+  </Frame>
+);
+const TagVars = () => (
+  <Frame bg={INK}><Cap color="#64748b">On Dark · Mono · Favicon</Cap>
+    <Wordmark family="'Space Grotesk'" size={30} weight={500} color="#fff" text="alternote" tracking="-0.02em" />
+    <div style={{ display:'flex', alignItems:'center', gap:16 }}>
+      <IconTile bg={ROSE} size={46}><TagMark size={30} stroke="#fff" sw={7.5} /></IconTile>
+      <IconTile bg="#fff" size={46}><TagMark size={30} stroke={ROSE} sw={7.5} /></IconTile>
+      <IconTile bg="#1e293b" size={46}><TagMark size={30} stroke={ROSE} sw={7.5} /></IconTile>
+      <IconTile bg={ROSE} size={30}><TagMark size={22} stroke="#fff" sw={9} /></IconTile>
+    </div>
+  </Frame>
+);
+
+// =================================================================== CANVAS
+const { DesignCanvas, DCSection, DCArtboard } = window;
+const App = () => (
+  <DesignCanvas>
+    <DCSection id="hybrid" title="02 + 04 · Hybrid" subtitle="A hang-tag carrying the stitch-star — garment-world clarity + your ownable mark. Navy tag, rose star.">
+      <DCArtboard id="h1" label="App Icon" width={300} height={300}><HybIcon/></DCArtboard>
+      <DCArtboard id="h2" label="Lockup" width={440} height={300}><HybLockup/></DCArtboard>
+      <DCArtboard id="h3" label="Variations" width={440} height={300}><HybVars/></DCArtboard>
+    </DCSection>
+    <DCSection id="notch" title="01 · Notch" subtitle="The A as a tailor's notch + a stitched crossbar — the alter-note pun, made literal.">
+      <DCArtboard id="n1" label="App Icon" width={300} height={300}><NotchIcon/></DCArtboard>
+      <DCArtboard id="n2" label="Lockup" width={440} height={300}><NotchLockup/></DCArtboard>
+      <DCArtboard id="n3" label="Variations" width={440} height={300}><NotchVars/></DCArtboard>
+    </DCSection>
+    <DCSection id="stitch" title="02 · Stitch-star" subtitle="Your ✦ sparkle, rebuilt from radiating thread stitches. Navy + rose, straight from the app palette.">
+      <DCArtboard id="s1" label="App Icon" width={300} height={300}><StitchIcon/></DCArtboard>
+      <DCArtboard id="s2" label="Lockup" width={440} height={300}><StitchLockup/></DCArtboard>
+      <DCArtboard id="s3" label="Variations" width={440} height={300}><StitchVars/></DCArtboard>
+    </DCSection>
+    <DCSection id="edit" title="03 · Editorial" subtitle="Type-led. A modern serif wordmark; the dot is the 'note'. Fashion-magazine restraint.">
+      <DCArtboard id="e1" label="App Icon" width={300} height={300}><EditIcon/></DCArtboard>
+      <DCArtboard id="e2" label="Lockup" width={440} height={300}><EditLockup/></DCArtboard>
+      <DCArtboard id="e3" label="Variations" width={440} height={300}><EditVars/></DCArtboard>
+    </DCSection>
+    <DCSection id="tag" title="04 · Tag" subtitle="A clothing hang-tag as the mark. Friendly, unmistakably garment-world.">
+      <DCArtboard id="t1" label="App Icon" width={300} height={300}><TagIcon/></DCArtboard>
+      <DCArtboard id="t2" label="Lockup" width={440} height={300}><TagLockup/></DCArtboard>
+      <DCArtboard id="t3" label="Variations" width={440} height={300}><TagVars/></DCArtboard>
+    </DCSection>
+  </DesignCanvas>
+);
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

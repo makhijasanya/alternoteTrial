@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlterNote — Brand Sheet</title>
+<link rel="icon" type="image/svg+xml" href="assets/alternote-favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rose:#d9385e; --rose-soft:#fef2f4;
+    --navy:#0f172a; --navy-2:#1e293b;
+    --slate:#64748b; --slate-2:#94a3b8;
+    --line:#e7e2d9; --paper:#fdfbf7; --white:#fff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--navy);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px}
+  h1,h2,h3,.wm{font-family:'Hanken Grotesk',sans-serif}
+  .cap{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate-2);font-weight:600}
+  section{padding:64px 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:36px}
+  .sec-head .num{font-family:'Hanken Grotesk';font-weight:800;font-size:15px;color:var(--rose)}
+  .sec-head h2{font-size:26px;font-weight:700;letter-spacing:-.02em}
+  .sec-head p{font-size:14px;color:var(--slate);margin-left:auto;max-width:340px;text-align:right;line-height:1.5}
+  .grid{display:grid;gap:20px}
+  .card{background:var(--white);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+  .pad{padding:26px}
+  .lbl{font-size:12px;color:var(--slate);margin-top:14px}
+  .lbl b{color:var(--navy);font-weight:600}
+  .wm{font-weight:700;letter-spacing:-.03em;color:var(--navy)}
+  code{font-family:'DM Mono',ui-monospace,monospace;font-size:12px;background:#f1efe9;padding:2px 7px;border-radius:5px;color:var(--navy)}
+  .tile{display:flex;align-items:center;justify-content:center}
+  .swatch{height:110px;border-radius:14px;display:flex;align-items:flex-end;padding:12px}
+  .swatch span{font-size:11px;font-weight:600}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:var(--rose);color:#fff;border:none;border-radius:11px;padding:11px 18px;font-family:'DM Sans';font-size:13px;font-weight:600;cursor:pointer;text-decoration:none}
+  .btn.ghost{background:transparent;color:var(--navy);border:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<div style="background:linear-gradient(160deg,#0f172a 0%,#1e3a5f 100%);color:#fff">
+  <div class="wrap" style="padding:72px 32px 64px">
+    <div class="cap" style="color:#7c8aa3">AlterNote · Visual Identity</div>
+    <div style="display:flex;align-items:center;gap:26px;margin:28px 0 22px;flex-wrap:wrap">
+      <div style="width:96px;height:96px;border-radius:23px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center">
+        <img src="assets/alternote-mark.svg" width="58" height="58" alt="mark">
+      </div>
+      <div class="wm" style="font-size:74px;color:#fff;line-height:.9">AlterNote</div>
+    </div>
+    <p style="color:#94a3b8;font-size:16px;max-width:560px;line-height:1.6">The stitch-star — a sparkle rebuilt from radiating thread stitches. Every stitch, noted. One mark, your whole boutique.</p>
+    <div style="display:flex;gap:10px;margin-top:30px">
+      <a class="btn" href="#assets">Get the files</a>
+      <a class="btn ghost" style="color:#fff;border-color:rgba(255,255,255,.18)" href="#context">See it in the app</a>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ============ THE MARK ============ -->
+  <section style="border-top:none">
+    <div class="sec-head"><span class="num">01</span><h2>The mark</h2>
+      <p>Eight thread stitches radiate from a single point — the long cardinal stitches anchor it, the short diagonals give it spark.</p></div>
+    <div class="grid" style="grid-template-columns:1.2fr 1fr 1fr">
+      <div class="card tile" style="background:var(--navy);min-height:300px">
+        <img src="assets/alternote-mark.svg" width="150" height="150" alt="mark on navy">
+      </div>
+      <div class="card tile" style="min-height:300px">
+        <img src="assets/alternote-mark-navy.svg" width="120" height="120" alt="mark navy">
+      </div>
+      <div class="card tile" style="background:var(--rose);min-height:300px">
+        <img src="assets/alternote-mark-white.svg" width="120" height="120" alt="mark white">
+      </div>
+    </div>
+    <div style="display:flex;gap:28px;margin-top:18px;flex-wrap:wrap">
+      <div class="lbl"><b>Primary</b> — rose on navy</div>
+      <div class="lbl"><b>Mono</b> — navy on light</div>
+      <div class="lbl"><b>Reverse</b> — white on rose</div>
+    </div>
+  </section>
+
+  <!-- ============ APP ICON ============ -->
+  <section id="context">
+    <div class="sec-head"><span class="num">02</span><h2>App icon</h2>
+      <p>Navy squircle, rose stitch-star, optically centered. Holds up from home-screen to favicon.</p></div>
+    <div class="grid" style="grid-template-columns:repeat(4,1fr);align-items:end">
+      <div><img src="assets/alternote-icon-512.png" style="width:100%;border-radius:24%;display:block;box-shadow:0 16px 36px -16px rgba(15,23,42,.45)" alt="icon"><div class="lbl"><b>Primary</b> · 1024–512px</div></div>
+      <div><img src="assets/alternote-icon-rose-1024.png" style="width:100%;border-radius:24%;display:block;box-shadow:0 16px 36px -16px rgba(217,56,94,.4)" alt="icon rose"><div class="lbl"><b>Alt</b> · rose / white</div></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px"><img src="assets/alternote-icon-120.png" style="width:84px;border-radius:24%;display:block" alt="icon small"><div class="lbl"><b>120px</b></div></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:14px">
+        <div style="display:flex;align-items:end;gap:12px">
+          <img src="assets/favicon-48.png" style="width:48px;border-radius:22%" alt="48"><img src="assets/favicon-32.png" style="width:32px;border-radius:22%" alt="32"><img src="assets/favicon-16.png" style="width:16px;border-radius:20%" alt="16">
+        </div><div class="lbl"><b>Favicon</b> · 48/32/16</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LOCKUP ============ -->
+  <section>
+    <div class="sec-head"><span class="num">03</span><h2>Lockup</h2>
+      <p>Mark + wordmark set in Hanken Grotesk Bold. Clearspace = the height of one stitch on every side.</p></div>
+    <div class="grid" style="grid-template-columns:1fr 1fr">
+      <div class="card pad tile" style="min-height:200px">
+        <div style="display:flex;align-items:center;gap:18px">
+          <div style="width:64px;height:64px;border-radius:16px;background:var(--navy);display:flex;align-items:center;justify-content:center"><img src="assets/alternote-mark.svg" width="40" height="40" alt=""></div>
+          <div class="wm" style="font-size:42px">AlterNote</div>
+        </div>
+      </div>
+      <div class="card pad tile" style="min-height:200px;background:var(--navy)">
+        <div style="display:flex;align-items:center;gap:18px">
+          <div style="width:64px;height:64px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center"><img src="assets/alternote-mark.svg" width="40" height="40" alt=""></div>
+          <div class="wm" style="font-size:42px;color:#fff">AlterNote</div>
+        </div>
+      </div>
+    </div>
+    <div class="card pad tile" style="margin-top:20px;min-height:120px;justify-content:flex-start;gap:40px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:11px"><div style="width:34px;height:34px;border-radius:9px;background:var(--navy);display:flex;align-items:center;justify-content:center"><img src="assets/alternote-mark.svg" width="21" height="21" alt=""></div><div class="wm" style="font-size:23px">AlterNote</div></div>
+      <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:22px;border-radius:6px;background:var(--navy);display:flex;align-items:center;justify-content:center"><img src="assets/alternote-mark.svg" width="14" height="14" alt=""></div><div class="wm" style="font-size:15px">AlterNote</div></div>
+      <span class="lbl" style="margin:0">Minimum lockup width <b>96px</b> · mark-only below that.</span>
+    </div>
+  </section>
+
+  <!-- ============ COLOR ============ -->
+  <section>
+    <div class="sec-head"><span class="num">04</span><h2>Color</h2>
+      <p>Two brand colors, slate neutrals — straight from the product UI. Nothing new invented.</p></div>
+    <div class="grid" style="grid-template-columns:repeat(6,1fr)">
+      <div><div class="swatch" style="background:var(--rose)"><span style="color:#fff">Rose</span></div><div class="lbl"><code>#D9385E</code></div></div>
+      <div><div class="swatch" style="background:var(--navy)"><span style="color:#fff">Navy</span></div><div class="lbl"><code>#0F172A</code></div></div>
+      <div><div class="swatch" style="background:var(--navy-2)"><span style="color:#fff">Navy 2</span></div><div class="lbl"><code>#1E293B</code></div></div>
+      <div><div class="swatch" style="background:var(--slate)"><span style="color:#fff">Slate</span></div><div class="lbl"><code>#64748B</code></div></div>
+      <div><div class="swatch" style="background:var(--rose-soft)"><span style="color:var(--rose)">Rose soft</span></div><div class="lbl"><code>#FEF2F4</code></div></div>
+      <div><div class="swatch" style="background:var(--paper);border:1px solid var(--line)"><span style="color:var(--slate)">Paper</span></div><div class="lbl"><code>#FDFBF7</code></div></div>
+    </div>
+  </section>
+
+  <!-- ============ TYPE ============ -->
+  <section>
+    <div class="sec-head"><span class="num">05</span><h2>Type</h2>
+      <p>The wordmark is Hanken Grotesk. The app keeps DM Sans for UI and DM Serif Display for editorial moments.</p></div>
+    <div class="grid" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="card pad"><div class="wm" style="font-size:46px;line-height:1">Aa</div><div style="font-family:'Hanken Grotesk';font-weight:700;font-size:18px;margin-top:14px">Hanken Grotesk</div><div class="lbl">Wordmark · Bold 700</div></div>
+      <div class="card pad"><div style="font-family:'DM Sans';font-weight:600;font-size:46px;line-height:1">Aa</div><div style="font-family:'DM Sans';font-weight:600;font-size:18px;margin-top:14px">DM Sans</div><div class="lbl">Product UI · 400 / 500 / 600</div></div>
+      <div class="card pad"><div style="font-family:'DM Serif Display';font-size:46px;line-height:1">Aa</div><div style="font-family:'DM Serif Display';font-size:18px;margin-top:14px">DM Serif Display</div><div class="lbl">Editorial · names & figures</div></div>
+    </div>
+  </section>
+
+  <!-- ============ IN CONTEXT ============ -->
+  <section>
+    <div class="sec-head"><span class="num">06</span><h2>In the app</h2>
+      <p>Wired into the onboarding splash &amp; sign-in — exactly the flow your prototype opens with.</p></div>
+    <div style="display:flex;gap:28px;flex-wrap:wrap;justify-content:center">
+      <!-- splash phone -->
+      <div style="width:240px;height:500px;border-radius:34px;background:linear-gradient(160deg,#0f172a 0%,#1e3a5f 100%);padding:38px 26px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 30px 60px -24px rgba(15,23,42,.6)">
+        <img src="assets/alternote-mark.svg" width="46" height="46" alt="">
+        <div class="wm" style="color:#fff;font-size:30px;margin-top:14px">AlterNote</div>
+        <div style="color:#94a3b8;font-size:12px;margin-top:8px;text-align:center">Your boutique, beautifully managed</div>
+        <div style="margin-top:auto;width:100%;background:#fff;color:var(--rose);border-radius:12px;padding:12px;text-align:center;font-weight:600;font-size:13px">Get Started — It's Free</div>
+      </div>
+      <!-- login phone -->
+      <div style="width:240px;height:500px;border-radius:34px;background:linear-gradient(160deg,#0f172a 0%,#1e3a5f 100%);padding:42px 22px 22px;display:flex;flex-direction:column;align-items:center;box-shadow:0 30px 60px -24px rgba(15,23,42,.6)">
+        <img src="assets/alternote-mark.svg" width="30" height="30" alt="">
+        <div class="wm" style="color:#fff;font-size:22px;margin-top:8px">AlterNote</div>
+        <div style="color:#94a3b8;font-size:11px;margin-top:6px;margin-bottom:18px">Welcome back</div>
+        <div style="background:#fff;border-radius:16px;padding:18px;width:100%">
+          <div style="font-family:'Hanken Grotesk';font-weight:700;font-size:15px">Sign in</div>
+          <div class="lbl" style="margin-top:2px;margin-bottom:14px">Enter your mobile number</div>
+          <div style="height:40px;border-radius:9px;border:1px solid var(--line);margin-bottom:10px"></div>
+          <div style="height:40px;border-radius:9px;border:1px solid var(--line);margin-bottom:14px"></div>
+          <div style="background:var(--rose);color:#fff;border-radius:10px;padding:11px;text-align:center;font-weight:600;font-size:13px">Sign In</div>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:24px"><a class="btn ghost" href="../AlterNote Prototype.html">Open the live prototype →</a></div>
+  </section>
+
+  <!-- ============ DO / DON'T ============ -->
+  <section>
+    <div class="sec-head"><span class="num">07</span><h2>Do &amp; don't</h2>
+      <p>Keep the mark crisp, geometric, and on-palette.</p></div>
+    <div class="grid" style="grid-template-columns:repeat(4,1fr)">
+      <div class="card"><div class="tile" style="background:var(--navy);height:130px"><img src="assets/alternote-mark.svg" width="62" height="62" alt=""></div><div class="pad" style="padding:14px"><div style="color:#16a34a;font-weight:700;font-size:13px">✓ Do</div><div class="lbl" style="margin-top:4px">Rose on navy, full clearspace</div></div></div>
+      <div class="card"><div class="tile" style="background:#fff;height:130px"><img src="assets/alternote-mark-navy.svg" width="58" height="58" alt=""></div><div class="pad" style="padding:14px"><div style="color:#16a34a;font-weight:700;font-size:13px">✓ Do</div><div class="lbl" style="margin-top:4px">Navy mono on light surfaces</div></div></div>
+      <div class="card"><div class="tile" style="background:var(--rose);height:130px"><img src="assets/alternote-mark.svg" width="62" height="62" alt="" style="filter:hue-rotate(120deg) saturate(1.6)"></div><div class="pad" style="padding:14px"><div style="color:var(--rose);font-weight:700;font-size:13px">✕ Don't</div><div class="lbl" style="margin-top:4px">Recolor outside the palette</div></div></div>
+      <div class="card"><div class="tile" style="background:var(--navy);height:130px;overflow:hidden"><img src="assets/alternote-mark.svg" width="62" height="40" alt="" style="object-fit:fill"></div><div class="pad" style="padding:14px"><div style="color:var(--rose);font-weight:700;font-size:13px">✕ Don't</div><div class="lbl" style="margin-top:4px">Stretch or distort the mark</div></div></div>
+    </div>
+  </section>
+
+  <!-- ============ ASSETS ============ -->
+  <section id="assets">
+    <div class="sec-head"><span class="num">08</span><h2>Files</h2>
+      <p>Vectors for anything that scales, PNGs for stores and the web.</p></div>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="card pad"><div class="cap">Vector · SVG</div><ul style="list-style:none;font-size:13px;color:var(--navy);margin-top:12px;line-height:2.1">
+        <li>alternote-mark.svg <span style="color:var(--slate-2)">· rose</span></li>
+        <li>alternote-mark-navy / -white.svg</li>
+        <li>alternote-icon.svg <span style="color:var(--slate-2)">· navy</span></li>
+        <li>alternote-icon-rose.svg</li>
+        <li>alternote-lockup.svg</li>
+        <li>alternote-favicon.svg</li>
+      </ul></div>
+      <div class="card pad"><div class="cap">Raster · PNG</div><ul style="list-style:none;font-size:13px;color:var(--navy);margin-top:12px;line-height:2.1">
+        <li>alternote-icon-1024 / 512 / 256</li>
+        <li>alternote-icon-180 <span style="color:var(--slate-2)">· apple-touch</span></li>
+        <li>alternote-icon-120</li>
+        <li>favicon-48 / 32 / 16</li>
+        <li>alternote-mark-rose / white-512</li>
+      </ul></div>
+      <div class="card pad" style="background:var(--navy);color:#fff"><div class="cap" style="color:#7c8aa3">Grab everything</div>
+        <p style="font-size:13px;color:#94a3b8;margin:12px 0 18px;line-height:1.6">All vector + raster assets are in <code style="background:rgba(255,255,255,.08);color:#fff">logo/assets/</code>. Ask me to zip them up for handoff.</p>
+        <a class="btn" href="assets/alternote-icon.svg" download>Download icon SVG</a>
+      </div>
+    </div>
+  </section>
+
+  <div style="padding:40px 0 80px;text-align:center" class="lbl">AlterNote · Brand Sheet · v1.0 — finalized from Direction 02 · Stitch-star</div>
+
+</div>
+</body>
+</html>

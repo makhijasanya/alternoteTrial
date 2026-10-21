@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlterNote — Mobile Wireframes</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#eee8db;font-family:'DM Sans',sans-serif;padding:36px 40px 100px;min-height:100vh}
+#root{max-width:1900px;margin:0 auto}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+/* ─────────────────────────────────────
+   WIREFRAME PRIMITIVES
+───────────────────────────────────── */
+const W = {
+  Status: () => <div style={{height:8,background:'#ccc'}} />,
+
+  Header: ({title,back,action,dark,noBottom}) => (
+    <div style={{padding:'9px 10px 8px',borderBottom:noBottom?'none':'1.5px solid #e5e5e5',display:'flex',alignItems:'center',gap:7,background:dark?'#1a1a2e':'#fff',flexShrink:0}}>
+      {back && <div style={{width:20,height:20,borderRadius:5,background:dark?'rgba(255,255,255,.15)':'#f0f0f0',flexShrink:0}} />}
+      <div style={{fontSize:13,fontWeight:700,color:dark?'#fff':'#1a1a2e',flex:1,fontFamily:"'DM Sans',sans-serif"}}>{title}</div>
+      {action && <div style={{background:'#d9385e',color:'#fff',fontSize:10,fontWeight:700,borderRadius:6,padding:'2px 7px',fontFamily:"'DM Sans',sans-serif"}}>{action}</div>}
+    </div>
+  ),
+
+  CrimsonHero: ({badge,title,sub}) => (
+    <div style={{background:'#d9385e',padding:'14px 10px 12px',flexShrink:0}}>
+      {badge && <div style={{fontSize:9,color:'rgba(255,255,255,.75)',letterSpacing:1,textTransform:'uppercase',marginBottom:3}}>{badge}</div>}
+      <div style={{fontFamily:"'DM Sans',sans-serif",fontWeight:700,fontSize:15,color:'#fff',lineHeight:1.2}}>{title}</div>
+      {sub && <div style={{fontSize:10,color:'rgba(255,255,255,.75)',marginTop:2}}>{sub}</div>}
+    </div>
+  ),
+
+  DarkHero: ({children}) => (
+    <div style={{background:'#1a1a2e',padding:'12px 10px 14px',flexShrink:0}}>{children}</div>
+  ),
+
+  Steps: ({n=4,done=0}) => (
+    <div style={{display:'flex',gap:4,padding:'7px 10px 3px',flexShrink:0}}>
+      {Array.from({length:n},(_,i)=>(
+        <div key={i} style={{flex:1,height:3,borderRadius:3,background:i<done?'#d9385e':'#e0e0e0'}} />
+      ))}
+    </div>
+  ),
+
+  StepLabel: ({text}) => <div style={{fontSize:10,color:'#999',padding:'0 10px 6px',fontFamily:"'DM Sans',sans-serif"}}>{text}</div>,
+
+  Tabs: ({tabs,active=0}) => (
+    <div style={{display:'flex',borderBottom:'1.5px solid #e5e5e5',background:'#fff',flexShrink:0}}>
+      {tabs.map((t,i)=>(
+        <div key={i} style={{flex:1,padding:'7px 2px',textAlign:'center',fontSize:10,fontWeight:700,fontFamily:"'DM Sans',sans-serif",color:i===active?'#d9385e':'#888',borderBottom:i===active?'2px solid #d9385e':'none',marginBottom:i===active?-1.5:0}}>{t}</div>
+      ))}
+    </div>
+  ),
+
+  Search: () => (
+    <div style={{margin:'6px 8px',borderRadius:8,background:'#f5f5f5',height:26,border:'1.5px solid #e0e0e0',display:'flex',alignItems:'center',padding:'0 8px',gap:5,flexShrink:0}}>
+      <div style={{width:10,height:10,borderRadius:'50%',border:'1.5px solid #bbb'}} />
+      <div style={{height:5,borderRadius:3,background:'#ddd',flex:1}} />
+    </div>
+  ),
+
+  Chips: ({chips,active=0}) => (
+    <div style={{display:'flex',gap:5,padding:'2px 8px 6px',overflow:'hidden',flexShrink:0}}>
+      {chips.map((c,i)=>(
+        <div key={i} style={{borderRadius:20,padding:'2px 8px',fontSize:10,fontWeight:700,background:i===active?'#d9385e':'#f0f0f0',color:i===active?'#fff':'#777',whiteSpace:'nowrap',fontFamily:"'DM Sans',sans-serif"}}>{c}</div>
+      ))}
+    </div>
+  ),
+
+  Line: ({w='100%',dark,accent,mt=3,mb=3,h=6}) => (
+    <div style={{height:h,borderRadius:3,margin:`${mt}px 0 ${mb}px`,background:accent?'#d9385e':dark?'rgba(255,255,255,.5)':'#e0e0e0',width:w}} />
+  ),
+
+  Lines: ({n=3,last='65%',light}) => (
+    <div>
+      {Array.from({length:n},(_,i)=>(
+        <div key={i} style={{height:6,borderRadius:3,margin:'3px 0',background:light?'rgba(255,255,255,.25)':'#e0e0e0',width:i===n-1?last:'100%'}} />
+      ))}
+    </div>
+  ),
+
+  Card: ({children,mb=5,accent,style={}}) => (
+    <div style={{border:accent?'1.5px solid #d9385e':'1.5px solid #e5e5e5',borderRadius:8,margin:`0 8px ${mb}px`,padding:8,background:'#fff',...style}}>{children}</div>
+  ),
+
+  Block: ({h=30,bg='#f0f0f0',mb=5,children,style={}}) => (
+    <div style={{borderRadius:6,margin:`0 8px ${mb}px`,background:bg,minHeight:h,padding:children?8:0,...style}}>{children}</div>
+  ),
+
+  Btn: ({label,primary=true,mb=5,color}) => (
+    <div style={{margin:`4px 8px ${mb}px`,borderRadius:8,background:color||(primary?'#d9385e':'#f0f0f0'),height:28,display:'flex',alignItems:'center',justifyContent:'center',border:primary?'none':'1.5px solid #ddd'}}>
+      <span style={{fontSize:11,fontWeight:700,fontFamily:"'DM Sans',sans-serif",color:primary?'#fff':'#666'}}>{label}</span>
+    </div>
+  ),
+
+  Input: ({label,mb=5}) => (
+    <div style={{margin:`0 8px ${mb}px`}}>
+      {label&&<div style={{fontSize:9,color:'#aaa',fontWeight:700,marginBottom:2,fontFamily:"'DM Sans',sans-serif",textTransform:'uppercase'}}>{label}</div>}
+      <div style={{borderRadius:6,background:'#f8f8f8',height:22,border:'1.5px solid #e0e0e0'}} />
+    </div>
+  ),
+
+  Textarea: ({label,h=40}) => (
+    <div style={{margin:'0 8px 5px'}}>
+      {label&&<div style={{fontSize:9,color:'#aaa',fontWeight:700,marginBottom:2,fontFamily:"'DM Sans',sans-serif",textTransform:'uppercase'}}>{label}</div>}
+      <div style={{borderRadius:6,background:'#f8f8f8',height:h,border:'1.5px solid #e0e0e0'}} />
+    </div>
+  ),
+
+  Avatar: ({size=26,color='#e0e0e0'}) => (
+    <div style={{width:size,height:size,borderRadius:size/3.5,background:color,flexShrink:0}} />
+  ),
+
+  Row: ({hasSub,hasTag,hasStatus,last,active}) => (
+    <div style={{display:'flex',alignItems:'center',gap:7,padding:'7px 8px',borderBottom:last?'none':'1px solid #f5f5f5',background:active?'#fef2f4':'#fff',borderLeft:active?'2.5px solid #d9385e':'none',flexShrink:0}}>
+      <div style={{width:26,height:26,borderRadius:7,background:active?'#d9385e':'#e0e0e0',flexShrink:0}} />
+      <div style={{flex:1}}>
+        <div style={{height:6,borderRadius:3,background:active?'#c0c0c0':'#ddd',width:'65%',marginBottom:3}} />
+        {hasSub&&<div style={{height:5,borderRadius:3,background:'#ebebeb',width:'45%'}} />}
+      </div>
+      {hasTag&&<div style={{width:26,height:12,borderRadius:6,background:'#fffbeb',border:'1px solid #fde68a'}} />}
+      {hasStatus&&<div style={{width:38,height:12,borderRadius:6,background:'#fffbeb',border:'1px solid #fde68a'}} />}
+    </div>
+  ),
+
+  OrderCard: ({status,hasTags,urgent}) => (
+    <div style={{border:'1.5px solid #e5e5e5',borderRadius:8,margin:'0 8px 6px',padding:'8px 9px',background:'#fff',flexShrink:0}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:6}}>
+        <div style={{flex:1,marginRight:8}}>
+          <div style={{height:7,borderRadius:3,background:'#ddd',width:'65%',marginBottom:3}} />
+          <div style={{height:5,borderRadius:3,background:'#ebebeb',width:'50%'}} />
+        </div>
+        <div style={{width:44,height:14,borderRadius:7,background:status==='prg'?'#fffbeb':status==='fit'?'#eff6ff':status==='cmp'?'#ecfdf5':'#f8fafc',border:`1px solid ${status==='prg'?'#fde68a':status==='fit'?'#bfdbfe':status==='cmp'?'#a7f3d0':'#e0e0e0'}`}} />
+      </div>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <div style={{display:'flex',gap:4}}>
+          {hasTags&&<><div style={{width:22,height:11,borderRadius:6,background:'#fef2f4',border:'1px solid #fecdd3'}} /><div style={{width:28,height:11,borderRadius:6,background:'#fffbeb',border:'1px solid #fde68a'}} /></>}
+        </div>
+        {urgent&&<div style={{height:5,borderRadius:3,background:'#fde68a',width:30}} />}
+      </div>
+    </div>
+  ),
+
+  Nav: ({tabs=5,active=0,role='admin'}) => {
+    const color=role==='tailor'?'#059669':role==='help'?'#2563eb':'#d9385e';
+    return (
+      <div style={{borderTop:'1.5px solid #e5e5e5',display:'flex',padding:'5px 0 3px',background:'#fff',flexShrink:0}}>
+        {Array.from({length:tabs},(_,i)=>(
+          <div key={i} style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:2}}>
+            <div style={{width:14,height:14,borderRadius:3,background:i===active?color:'#e0e0e0'}} />
+            <div style={{width:18,height:3,borderRadius:2,background:'#eee'}} />
+          </div>
+        ))}
+      </div>
+    );
+  },
+
+  Info: ({text,color='amber'}) => {
+    const bg={amber:'#fffbeb',blue:'#eff6ff',green:'#ecfdf5',red:'#fef2f4'}[color]||'#fffbeb';
+    const tc={amber:'#92400e',blue:'#1e40af',green:'#065f46',red:'#be123c'}[color]||'#92400e';
+    return (
+      <div style={{background:bg,margin:'0 8px 5px',borderRadius:6,padding:'5px 7px',flexShrink:0}}>
+        <div style={{fontSize:10,color:tc,lineHeight:1.4,fontFamily:"'DM Sans',sans-serif"}}>{text}</div>
+      </div>
+    );
+  },
+
+  SLabel: ({text}) => <div style={{fontSize:9,color:'#aaa',fontWeight:700,textTransform:'uppercase',letterSpacing:.5,padding:'6px 8px 3px',fontFamily:"'DM Sans',sans-serif"}}>{text}</div>,
+
+  Sep: () => <div style={{height:1,background:'#f0f0f0',margin:'2px 8px'}} />,
+
+  MeasRow: ({target}) => (
+    <div style={{display:'flex',alignItems:'center',gap:5,padding:'4px 8px',flexShrink:0}}>
+      <div style={{height:6,borderRadius:3,background:'#ddd',width:'30%'}} />
+      <div style={{flex:1,height:20,borderRadius:5,background:'#f5f5f5',border:'1.5px solid #e0e0e0'}} />
+      {target&&<><div style={{fontSize:10,color:'#999'}}>→</div><div style={{flex:1,height:20,borderRadius:5,background:'#fef2f4',border:'1.5px solid #d9385e'}} /></>}
+    </div>
+  ),
+
+  StatusPills: ({active=1}) => (
+    <div style={{display:'flex',gap:4,flexWrap:'wrap',padding:'5px 8px'}}>
+      {['Received','In Progress','Fitting','Completed','Delivered'].map((s,i)=>(
+        <div key={i} style={{padding:'3px 7px',borderRadius:6,border:'1.5px solid',borderColor:i===active?'#d9385e':'#e0e0e0',background:i===active?'#d9385e':'#fff',fontSize:9,fontWeight:700,fontFamily:"'DM Sans',sans-serif",color:i===active?'#fff':'#aaa'}}>{s}</div>
+      ))}
+    </div>
+  ),
+
+  Bubble: ({out,lines=2}) => (
+    <div style={{display:'flex',justifyContent:out?'flex-end':'flex-start',padding:'2px 8px',flexShrink:0}}>
+      <div style={{background:out?'#d9385e':'#f0f0f0',borderRadius:out?'10px 10px 0 10px':'10px 10px 10px 0',padding:'5px 8px',maxWidth:'70%',minWidth:50}}>
+        {Array.from({length:lines},(_,i)=>(
+          <div key={i} style={{height:5,borderRadius:3,background:out?'rgba(255,255,255,.4)':'#ddd',width:i===lines-1?'60%':'100%',marginBottom:i<lines-1?3:0}} />
+        ))}
+      </div>
+    </div>
+  ),
+
+  Fab: () => (
+    <div style={{position:'absolute',bottom:58,right:10,width:30,height:30,background:'#d9385e',borderRadius:9,display:'flex',alignItems:'center',justifyContent:'center'}}>
+      <div style={{color:'#fff',fontSize:18,lineHeight:1,marginTop:-1}}>+</div>
+    </div>
+  ),
+};
+
+/* ─────────────────────────────────────
+   PHONE FRAME
+───────────────────────────────────── */
+const Phone = ({label,isNew,role,note,children}) => {
+  const rc={admin:{bg:'#fef2f4',c:'#d9385e'},help:{bg:'#eff6ff',c:'#2563eb'},tailor:{bg:'#ecfdf5',c:'#059669'},all:{bg:'#f5f3ff',c:'#7c3aed'},onboarding:{bg:'#f8fafc',c:'#334155'}}[role]||{bg:'#f8fafc',c:'#334155'};
+  const rLabel={admin:'Admin',help:'Help/Asst',tailor:'Tailor',all:'All Roles',onboarding:'Onboarding'}[role]||'';
+  return (
+    <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:7,width:162}}>
+      <div style={{textAlign:'center',display:'flex',alignItems:'center',gap:5,flexWrap:'wrap',justifyContent:'center'}}>
+        <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:14,fontWeight:700,color:'#1a1a2e',lineHeight:1.2}}>{label}</div>
+        {isNew&&<span style={{background:'#f59e0b',color:'#fff',fontSize:9,padding:'1px 6px',borderRadius:10,fontWeight:700,fontFamily:"'DM Sans',sans-serif"}}>NEW</span>}
+      </div>
+      {role&&<div style={{background:rc.bg,color:rc.c,fontSize:10,padding:'1px 8px',borderRadius:10,fontWeight:700,fontFamily:"'DM Sans',sans-serif",border:`1px solid ${rc.c}40`}}>{rLabel}</div>}
+      <div style={{width:162,background:'#fff',borderRadius:22,border:'2.5px solid #1a1a2e',boxShadow:'4px 4px 0 #1a1a2e',overflow:'hidden',position:'relative',display:'flex',flexDirection:'column'}}>
+        {children}
+      </div>
+      {note&&<div style={{fontFamily:"'DM Sans',sans-serif",fontSize:11,color:'#888',textAlign:'center',maxWidth:145,lineHeight:1.3}}>{note}</div>}
+    </div>
+  );
+};
+
+const Arr = ({label}) => (
+  <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:2,alignSelf:'center',marginTop:50,flexShrink:0}}>
+    {label&&<div style={{fontFamily:"'DM Sans',sans-serif",fontSize:10,color:'#aaa',whiteSpace:'nowrap'}}>{label}</div>}
+    <div style={{fontSize:22,color:'#bbb',lineHeight:1}}>→</div>
+  </div>
+);
+
+const FlowSection = ({num,title,desc,role,children}) => {
+  const colors={admin:'#d9385e',help:'#2563eb',tailor:'#059669',all:'#7c3aed',onboarding:'#334155',gap:'#f59e0b'};
+  const c=colors[role]||'#1a1a2e';
+  return (
+    <div style={{marginBottom:64}}>
+      <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:6}}>
+        <div style={{width:38,height:38,borderRadius:'50%',background:c,color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'DM Sans',sans-serif",fontSize:18,fontWeight:700,flexShrink:0}}>{num}</div>
+        <div>
+          <div style={{fontFamily:"'DM Serif Display',serif",fontSize:24,fontWeight:400,color:'#1a1a2e',lineHeight:1}}>{title}</div>
+          {desc&&<div style={{fontFamily:"'DM Sans',sans-serif",fontSize:15,color:'#888',marginTop:1}}>{desc}</div>}
+        </div>
+      </div>
+      <div style={{display:'flex',flexWrap:'wrap',gap:20,alignItems:'flex-start',paddingLeft:50}}>{children}</div>
+    </div>
+  );
+};
+
+/* ─────────────────────────────────────
+   ALL SCREENS
+───────────────────────────────────── */
+
+/* === FLOW 1: ONBOARDING === */
+const Splash = () => (
+  <Phone label="Splash" role="onboarding">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',flex:1,padding:'30px 14px 16px',display:'flex',flexDirection:'column',alignItems:'center',minHeight:260}}>
+      <div style={{width:32,height:32,borderRadius:8,background:'#d9385e',marginBottom:8}} />
+      <W.Line w="55%" dark h={12} mb={5} mt={0} />
+      <W.Line w="70%" dark h={5} mb={20} />
+      <div style={{display:'flex',gap:4,marginBottom:22}}>
+        {[1,0,0].map((a,i)=><div key={i} style={{width:a?18:5,height:4,borderRadius:4,background:a?'#fff':'rgba(255,255,255,.3)'}} />)}
+      </div>
+      <div style={{width:'100%',background:'#fff',borderRadius:9,padding:12,marginBottom:10}}>
+        <W.Lines n={2} last="50%" light={false}/>
+      </div>
+      <W.Btn label="Get Started — Free" primary mb={6} />
+      <W.Line w="60%" dark mb={0} />
+    </div>
+  </Phone>
+);
+
+const Login = () => (
+  <Phone label="Login" role="onboarding">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',padding:'22px 14px 16px',display:'flex',flexDirection:'column',alignItems:'center'}}>
+      <div style={{width:24,height:24,borderRadius:6,background:'#d9385e',marginBottom:6}} />
+      <W.Line w="45%" dark h={10} mb={3} mt={0}/>
+      <W.Line w="55%" dark mb={0}/>
+    </div>
+    <div style={{padding:'0 0 4px'}}>
+      <W.Card mb={0} style={{margin:'10px 8px 6px'}}>
+        <W.Input label="Mobile Number" mb={6}/>
+        <W.Input label="Password" mb={8}/>
+        <W.Btn label="Sign In" primary mb={0}/>
+      </W.Card>
+      <div style={{padding:'6px 10px',display:'flex',justifyContent:'center'}}>
+        <div style={{height:5,borderRadius:3,background:'#e0e0e0',width:'55%'}} />
+      </div>
+    </div>
+    <div style={{background:'#1a1a2e',padding:'8px'}}>
+      <div style={{height:5,borderRadius:3,background:'rgba(255,255,255,.15)',width:'40%',margin:'0 auto'}} />
+    </div>
+  </Phone>
+);
+
+const OTPVerify = () => (
+  <Phone label="OTP Verify" isNew role="onboarding" note="Forgot password → phone → OTP → reset PIN">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',padding:'20px 14px 14px',display:'flex',flexDirection:'column',alignItems:'center'}}>
+      <div style={{width:24,height:24,borderRadius:6,background:'#d9385e',marginBottom:6}} />
+      <W.Line w="50%" dark h={10} mb={4} mt={0}/>
+      <W.Line w="65%" dark mb={0}/>
+    </div>
+    <W.Info text="OTP sent to +91 98765 XXXXX" color="blue"/>
+    <div style={{padding:'14px 8px 8px',display:'flex',gap:7,justifyContent:'center'}}>
+      {[1,1,0,0].map((f,i)=>(
+        <div key={i} style={{width:32,height:36,borderRadius:8,border:`2px solid ${f?'#d9385e':'#e0e0e0'}`,background:f?'#fef2f4':'#f8f8f8',display:'flex',alignItems:'center',justifyContent:'center'}}>
+          {f?<div style={{width:8,height:8,borderRadius:'50%',background:'#d9385e'}} />:null}
+        </div>
+      ))}
+    </div>
+    <W.Line w="50%" mb={12} mt={6} style={{margin:'6px auto 12px'}}/>
+    <W.Btn label="Verify OTP" primary mb={5}/>
+    <div style={{textAlign:'center',padding:'0 8px 10px'}}>
+      <div style={{height:5,borderRadius:3,background:'#e0e0e0',width:'50%',margin:'0 auto'}} />
+    </div>
+  </Phone>
+);
+
+const ProfileSelect = () => (
+  <Phone label="Profile Select" role="onboarding" note="One device, multiple staff">
+    <W.Status/>
+    <div style={{padding:'14px 10px 8px'}}>
+      <W.Line w="70%" dark h={10} mb={4} mt={0}/>
+      <W.Line w="50%" mb={12}/>
+    </div>
+    {[{c:'#d9385e',active:true},{c:'#eff6ff'},{c:'#ecfdf5'},{c:'#fffbeb'}].map((p,i)=>(
+      <div key={i} style={{display:'flex',alignItems:'center',gap:8,padding:'8px 10px',borderRadius:9,margin:'0 8px 6px',border:`2px solid ${p.active?'#d9385e':'#e5e5e5'}`,background:p.active?'#fef2f4':'#fff'}}>
+        <div style={{width:30,height:30,borderRadius:9,background:p.c,flexShrink:0}} />
+        <div style={{flex:1}}>
+          <div style={{height:6,borderRadius:3,background:'#ddd',width:'60%',marginBottom:3}} />
+          <div style={{height:5,borderRadius:3,background:'#ebebeb',width:'40%'}} />
+        </div>
+        {p.active&&<div style={{width:14,height:14,borderRadius:4,background:'#d9385e'}} />}
+      </div>
+    ))}
+    <div style={{padding:'8px 10px 4px',textAlign:'center'}}>
+      <div style={{height:5,borderRadius:3,background:'#e0e0e0',width:'45%',margin:'0 auto 8px'}} />
+      <div style={{display:'flex',gap:7,justifyContent:'center',marginBottom:10}}>
+        {[1,1,0,0].map((f,i)=>(
+          <div key={i} style={{width:28,height:32,borderRadius:7,border:`2px solid ${f?'#d9385e':'#e0e0e0'}`,background:f?'#fef2f4':'#f8f8f8'}} />
+        ))}
+      </div>
+      <W.Btn label="Enter Dashboard" primary mb={0}/>
+    </div>
+  </Phone>
+);
+
+const BizSetup = () => (
+  <Phone label="Business Setup" role="onboarding" note="Step 1 of 4">
+    <W.Status/>
+    <W.CrimsonHero badge="Step 1 of 4" title="Set up your boutique" sub="Appears on all invoices"/>
+    <W.Input label="Boutique Name *" mb={5}/>
+    <W.Input label="City *" mb={5}/>
+    <W.Input label="Phone *" mb={5}/>
+    <W.Input label="GST Number (optional)" mb={5}/>
+    <W.Block h={38} mb={5} style={{border:'1.5px dashed #ddd',display:'flex',alignItems:'center',justifyContent:'center'}}>
+      <div style={{fontSize:9,color:'#aaa',fontFamily:"'DM Sans',sans-serif",textAlign:'center'}}>Tap to upload logo</div>
+    </W.Block>
+    <W.Btn label="Continue →" primary/>
+  </Phone>
+);
+
+const TemplateSetup = () => (
+  <Phone label="Template Setup" role="onboarding" note="Step 2 of 4">
+    <W.Status/>
+    <W.CrimsonHero badge="Step 2 of 4" title="Measurement templates" sub="Select garment types you work with"/>
+    <W.SLabel text="Choose presets"/>
+    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6,padding:'0 8px 6px'}}>
+      {['Blouse ✓','Lehenga ✓','Kurti ✓','Sherwani','Suit','+ Custom'].map((g,i)=>(
+        <div key={i} style={{padding:'9px 5px',borderRadius:8,border:`2px solid ${i<3?'#d9385e':'#e0e0e0'}`,background:i<3?'#fef2f4':'#fff',textAlign:'center'}}>
+          <div style={{height:5,borderRadius:3,background:i<3?'#d9385e':'#ddd',width:'60%',margin:'0 auto 3px'}} />
+          <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'40%',margin:'0 auto'}} />
+        </div>
+      ))}
+    </div>
+    <W.Info text="✓ 3 selected: Blouse, Lehenga, Kurti" color="amber"/>
+    <W.Btn label="Continue →" primary/>
+    <W.Btn label="Set up later" primary={false}/>
+  </Phone>
+);
+
+const StaffSetup = () => (
+  <Phone label="Add Staff" role="onboarding" note="Step 3 of 4">
+    <W.Status/>
+    <W.CrimsonHero badge="Step 3 of 4" title="Add your team" sub="Each member gets their own login"/>
+    <W.Card mb={5}>
+      <div style={{fontSize:9,color:'#aaa',fontWeight:700,fontFamily:"'DM Sans',sans-serif",marginBottom:5}}>ALREADY ADDED — YOU</div>
+      <div style={{display:'flex',alignItems:'center',gap:7}}>
+        <W.Avatar size={26} color="#d9385e"/>
+        <div style={{flex:1}}>
+          <div style={{height:6,borderRadius:3,background:'#ddd',width:'55%',marginBottom:3}} />
+          <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'35%'}} />
+        </div>
+      </div>
+    </W.Card>
+    <W.Card mb={5}>
+      <div style={{fontSize:9,color:'#1a1a2e',fontWeight:700,fontFamily:"'DM Sans',sans-serif",marginBottom:5}}>+ Add Staff Member</div>
+      <W.Input label="Full Name" mb={4}/>
+      <W.Input label="Role" mb={4}/>
+      <W.Input label="PIN (4 digits)" mb={4}/>
+      <W.Btn label="Add Member" primary mb={0}/>
+    </W.Card>
+    <W.Btn label="Continue →" primary/>
+    <W.Btn label="Skip for now" primary={false}/>
+  </Phone>
+);
+
+const OnboardDone = () => (
+  <Phone label="All Set!" role="onboarding">
+    <W.Status/>
+    <div style={{background:'#d9385e',padding:'22px 14px',textAlign:'center'}}>
+      <div style={{width:36,height:36,borderRadius:'50%',background:'rgba(255,255,255,.25)',margin:'0 auto 8px',display:'flex',alignItems:'center',justifyContent:'center'}}>
+        <div style={{color:'#fff',fontSize:18,fontWeight:700}}>✓</div>
+      </div>
+      <W.Line w="60%" dark h={10} mb={4} mt={0}/>
+      <W.Line w="45%" dark mb={0}/>
+    </div>
+    <div style={{padding:'12px 0 4px'}}>
+      {['Business profile set up','Measurement templates ready','Team members added','Ready to take orders'].map((s,i)=>(
+        <div key={i} style={{display:'flex',alignItems:'center',gap:7,padding:'6px 10px',borderBottom:'1px solid #f5f5f5'}}>
+          <div style={{width:16,height:16,borderRadius:'50%',background:'#ecfdf5',border:'1.5px solid #a7f3d0',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+            <div style={{width:6,height:6,borderRadius:'50%',background:'#059669'}} />
+          </div>
+          <div style={{height:5,borderRadius:3,background:'#ddd',flex:1}} />
+        </div>
+      ))}
+    </div>
+    <W.Btn label="Enter Dashboard →" primary/>
+  </Phone>
+);
+
+/* === FLOW 2: ADMIN DAILY === */
+const Dashboard = () => (
+  <Phone label="Dashboard" role="admin">
+    <W.Status/>
+    <div style={{padding:'9px 10px 8px',borderBottom:'1.5px solid #e5e5e5',display:'flex',alignItems:'center',justifyContent:'space-between',background:'#fff'}}>
+      <div><W.Line w={80} dark h={5} mb={2} mt={0}/><W.Line w={100} dark h={7} mb={0}/></div>
+      <div style={{display:'flex',gap:5}}>
+        <div style={{width:26,height:26,borderRadius:7,background:'#f0f0f0',position:'relative'}}>
+          <div style={{position:'absolute',top:-2,right:-2,width:6,height:6,borderRadius:'50%',background:'#d9385e'}} />
+        </div>
+        <div style={{width:26,height:26,borderRadius:7,background:'#d9385e'}} />
+      </div>
+    </div>
+    <div style={{display:'flex',gap:5,padding:'8px 8px 6px',background:'#fff'}}>
+      {[{h:'₹1.4L',sub:'This Month'},{h:'₹34K',sub:'Pending',warn:true}].map((m,i)=>(
+        <div key={i} style={{flex:1,background:'#f8f8f8',borderRadius:7,padding:'7px 8px',border:'1px solid #eee'}}>
+          <div style={{height:5,borderRadius:3,background:'#e0e0e0',width:'55%',marginBottom:4}} />
+          <div style={{height:9,borderRadius:3,background:m.warn?'#fde68a':'#ddd',width:'65%',marginBottom:3}} />
+          <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'40%'}} />
+        </div>
+      ))}
+    </div>
+    <div style={{display:'flex',alignItems:'flex-end',gap:3,padding:'6px 8px 8px',background:'#fff',height:50,borderBottom:'1px solid #f0f0f0'}}>
+      {[55,72,38,88,75,100].map((h,i)=>(
+        <div key={i} style={{flex:1,background:i===5?'#d9385e':'#f1c0cc',borderRadius:'2px 2px 0 0',height:`${h}%`,opacity:.85}} />
+      ))}
+    </div>
+    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:5,padding:'7px 8px',background:'#f5f5f5'}}>
+      {['New Order','New Client','Measurement','Invoice'].map((a,i)=>(
+        <div key={i} style={{background:'#fff',borderRadius:7,padding:'7px 8px',border:'1px solid #eee',display:'flex',alignItems:'center',gap:5}}>
+          <div style={{width:16,height:16,borderRadius:4,background:'#f0f0f0'}} />
+          <div style={{height:5,borderRadius:3,background:'#ddd',flex:1}} />
+        </div>
+      ))}
+    </div>
+    <W.SLabel text="Active Orders (12)"/>
+    <W.OrderCard status="prg" hasTags urgent/>
+    <W.OrderCard status="fit" hasTags/>
+    <W.OrderCard status="rec" hasTags/>
+    <W.Nav tabs={5} active={0}/>
+  </Phone>
+);
+
+const Notifications = () => (
+  <Phone label="Notifications" isNew role="admin" note="Overdue + delivery alerts + payment">
+    <W.Status/>
+    <W.Header title="Notifications" action="Mark all read"/>
+    <W.Chips chips={['All (6)','Overdue','Delivery','Payment']} active={0}/>
+    {[
+      {color:'#fef2f4',ic:'⏰',text:'Meera Kapoor — overdue by 1 day'},
+      {color:'#fffbeb',ic:'📅',text:'Sneha Rao delivery in 48 hrs'},
+      {color:'#ecfdf5',ic:'💸',text:'Payment received — Pooja Gupta ₹4,200'},
+      {color:'#eff6ff',ic:'📦',text:'Anita Sharma order assigned to Ramesh'},
+      {color:'#fffbeb',ic:'📅',text:'Nisha Verma — delivery tomorrow'},
+    ].map((n,i)=>(
+      <div key={i} style={{display:'flex',gap:7,padding:'8px 10px',borderBottom:'1px solid #f5f5f5',background:'#fff'}}>
+        <div style={{width:26,height:26,borderRadius:7,background:n.color,flexShrink:0}} />
+        <div style={{flex:1}}>
+          <div style={{height:6,borderRadius:3,background:'#ddd',width:'80%',marginBottom:3}} />
+          <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'55%'}} />
+        </div>
+      </div>
+    ))}
+    <W.Nav tabs={5} active={0}/>
+  </Phone>
+);
+
+const ClientList = () => (
+  <Phone label="Client List" role="admin">
+    <W.Status/>
+    <W.Header title="Clients" action="+ Add"/>
+    <W.Search/>
+    <W.Chips chips={['All (48)','VIP','Bridal','Regular']} active={0}/>
+    <W.Sep/>
+    <W.Row hasSub hasTag/>
+    <W.Row hasSub/>
+    <W.Row hasSub hasTag/>
+    <W.Row hasSub/>
+    <W.Row hasSub hasTag last/>
+    <W.Fab/>
+    <W.Nav tabs={5} active={1}/>
+  </Phone>
+);
+
+const OrderList = () => (
+  <Phone label="Orders List" role="admin">
+    <W.Status/>
+    <W.Header title="Orders" action="Filter"/>
+    <W.Search/>
+    <W.Chips chips={['All (14)','In Progress','Fitting','Done']} active={0}/>
+    <W.OrderCard status="prg" hasTags urgent/>
+    <W.OrderCard status="fit" hasTags/>
+    <W.OrderCard status="rec" hasTags/>
+    <W.OrderCard status="prg" hasTags/>
+    <W.Nav tabs={5} active={2}/>
+  </Phone>
+);
+
+const Analytics = () => (
+  <Phone label="Analytics" role="admin">
+    <W.Status/>
+    <W.Header title="Analytics" action="Apr 2025"/>
+    <div style={{display:'flex',gap:5,padding:'6px 8px',background:'#fff',borderBottom:'1px solid #f0f0f0'}}>
+      {['₹1.4L This Mo','₹34K Pending'].map((m,i)=>(
+        <div key={i} style={{flex:1,background:'#f8f8f8',borderRadius:7,padding:'6px',border:'1px solid #eee'}}>
+          <div style={{height:7,borderRadius:3,background:i?'#fde68a':'#ddd',width:'55%',marginBottom:3}} />
+          <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'45%'}} />
+        </div>
+      ))}
+    </div>
+    <div style={{display:'flex',alignItems:'flex-end',gap:3,padding:'8px',height:55}}>
+      {[55,72,38,88,75,100].map((h,i)=>(
+        <div key={i} style={{flex:1,background:i===5?'#d9385e':'#f1c0cc',borderRadius:'2px 2px 0 0',height:`${h}%`}} />
+      ))}
+    </div>
+    <W.SLabel text="Order Pipeline"/>
+    <div style={{display:'flex',gap:5,padding:'0 8px 8px'}}>
+      {[{n:'14',l:'Active'},{n:'2',l:'Overdue',warn:true},{n:'32',l:'Done',ok:true}].map((p,i)=>(
+        <div key={i} style={{flex:1,background:'#f8f8f8',borderRadius:7,padding:'8px 5px',textAlign:'center',border:'1px solid #eee'}}>
+          <div style={{height:9,borderRadius:3,background:p.warn?'#fde68a':p.ok?'#a7f3d0':'#ddd',width:'50%',margin:'0 auto 3px'}} />
+          <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'40%',margin:'0 auto'}} />
+        </div>
+      ))}
+    </div>
+    <W.SLabel text="Top Clients"/>
+    {[90,65,48].map((w,i)=>(
+      <div key={i} style={{display:'flex',alignItems:'center',gap:7,padding:'4px 8px'}}>
+        <W.Avatar size={22}/>
+        <div style={{flex:1}}>
+          <div style={{height:5,borderRadius:3,background:'#ddd',width:'55%',marginBottom:3}} />
+          <div style={{height:3,borderRadius:3,background:'#d9385e',width:`${w}%`}} />
+        </div>
+        <div style={{height:5,borderRadius:3,background:'#ddd',width:22}} />
+      </div>
+    ))}
+    <W.Nav tabs={5} active={0}/>
+  </Phone>
+);
+
+const Settings = () => (
+  <Phone label="Settings" role="admin">
+    <W.Status/>
+    <W.Header title="Settings"/>
+    <div style={{background:'#1a1a2e',padding:'10px',display:'flex',alignItems:'center',gap:8}}>
+      <div style={{width:36,height:36,borderRadius:10,background:'#d9385e',flexShrink:0}} />
+      <div style={{flex:1}}>
+        <div style={{height:6,borderRadius:3,background:'rgba(255,255,255,.5)',width:'60%',marginBottom:3}} />
+        <div style={{height:4,borderRadius:3,background:'rgba(255,255,255,.25)',width:'45%'}} />
+      </div>
+    </div>
+    {[['Boutique Profile','🏪'],['Team Members','👥'],['Measurement Templates','📐'],['Subscription','💳'],['WhatsApp','💬'],['Export Data','📤'],['Change PIN','🔑'],['Sign Out','🚪']].map(([t,ic],i)=>(
+      <div key={i} style={{display:'flex',alignItems:'center',gap:8,padding:'8px 10px',borderBottom:'1px solid #f5f5f5',background:'#fff'}}>
+        <div style={{width:24,height:24,borderRadius:6,background:'#f0f0f0',flexShrink:0}} />
+        <div style={{flex:1}}>
+          <div style={{height:6,borderRadius:3,background:'#ddd',width:'55%',marginBottom:2}} />
+          <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'40%'}} />
+        </div>
+        <div style={{width:6,height:10,borderRadius:2,background:'#e0e0e0'}} />
+      </div>
+    ))}
+    <W.Nav tabs={5} active={4}/>
+  </Phone>
+);
+
+/* === FLOW 3: NEW ORDER === */
+const OrderS1 = () => (
+  <Phone label="Order: S1 Client" role="admin">
+    <W.Status/>
+    <W.Header title="New Order" back/>
+    <W.Steps n={4} done={1}/>
+    <W.StepLabel text="Step 1 of 4 — Select Client"/>
+    <W.Search/>
+    <W.Row hasSub hasTag/>
+    <W.Row hasSub active/>
+    <W.Row hasSub/>
+    <W.Row hasSub hasTag/>
+    <div style={{display:'flex',alignItems:'center',gap:8,padding:'8px 10px',borderTop:'1px solid #f5f5f5'}}>
+      <div style={{width:26,height:26,borderRadius:7,border:'1.5px dashed #ddd',flexShrink:0}} />
+      <div style={{height:6,borderRadius:3,background:'#fecdd3',width:'50%'}} />
+    </div>
+    <W.Btn label="Continue →" primary/>
+    <W.Nav tabs={5} active={2}/>
+  </Phone>
+);
+
+const OrderS2 = () => (
+  <Phone label="Order: S2 Garment" role="admin">
+    <W.Status/>
+    <W.Header title="New Order" back/>
+    <W.Steps n={4} done={2}/>
+    <W.StepLabel text="Step 2 of 4 — Garment Details"/>
+    <W.SLabel text="Garment Type"/>
+    <div style={{display:'flex',flexWrap:'wrap',gap:5,padding:'0 8px 7px'}}>
+      {['Blouse','Lehenga','Salwar','Sherwani','Saree','+ Custom'].map((g,i)=>(
+        <div key={i} style={{padding:'3px 8px',borderRadius:20,border:`1.5px solid ${i===0?'#d9385e':'#e0e0e0'}`,background:i===0?'#fef2f4':'#fff',fontSize:10,fontFamily:"'DM Sans',sans-serif",fontWeight:700,color:i===0?'#d9385e':'#888'}}>{g}</div>
+      ))}
+    </div>
+    <W.Textarea label="Description" h={36}/>
+    <W.SLabel text="Tags"/>
+    <div style={{display:'flex',gap:5,padding:'0 8px 7px'}}>
+      {['Bridal','Rush','New Design','+'].map((t,i)=>(
+        <div key={i} style={{padding:'2px 7px',borderRadius:20,border:`1.5px solid ${i===0?'#d9385e':'#e0e0e0'}`,background:i===0?'#fef2f4':'#fff',fontSize:9,fontFamily:"'DM Sans',sans-serif",fontWeight:700,color:i===0?'#d9385e':'#aaa'}}>{t}</div>
+      ))}
+    </div>
+    <W.Block h={34} mb={5} style={{border:'1.5px dashed #ddd',display:'flex',alignItems:'center',justifyContent:'center'}}>
+      <div style={{fontSize:9,color:'#aaa',fontFamily:"'DM Sans',sans-serif"}}>📷 Add reference image</div>
+    </W.Block>
+    <W.Btn label="Continue →" primary/>
+    <W.Nav tabs={5} active={2}/>
+  </Phone>
+);
+
+const OrderS3 = () => (
+  <Phone label="Order: S3 Measurements" role="admin">
+    <W.Status/>
+    <W.Header title="New Order" back/>
+    <W.Steps n={4} done={3}/>
+    <W.StepLabel text="Step 3 of 4 — Measurements"/>
+    <W.Info text="Using saved blouse measurements for Sneha Rao" color="blue"/>
+    <div style={{display:'flex',gap:4,padding:'4px 8px 2px'}}>
+      {['Blouse','Lehenga','Kurti'].map((t,i)=>(
+        <div key={i} style={{padding:'3px 9px',borderRadius:20,background:i===0?'#d9385e':'#f0f0f0',color:i===0?'#fff':'#888',fontSize:10,fontFamily:"'DM Sans',sans-serif",fontWeight:700}}>{t}</div>
+      ))}
+    </div>
+    {['Bust','Waist','Hip','Shoulder','Sleeve','Back Length','Front Length'].map((f,i)=>(
+      <W.MeasRow key={i}/>
+    ))}
+    <W.Textarea label="Notes" h={30}/>
+    <W.Btn label="Continue →" primary/>
+    <W.Nav tabs={5} active={2}/>
+  </Phone>
+);
+
+const OrderS4 = () => (
+  <Phone label="Order: S4 Delivery" role="admin">
+    <W.Status/>
+    <W.Header title="New Order" back/>
+    <W.Steps n={4} done={4}/>
+    <W.StepLabel text="Step 4 of 4 — Delivery & Assign"/>
+    <W.SLabel text="Delivery Date"/>
+    <div style={{border:'1.5px solid #e0e0e0',borderRadius:8,margin:'0 8px 6px',overflow:'hidden'}}>
+      <div style={{background:'#1a1a2e',padding:'7px 10px',display:'flex',justifyContent:'space-between'}}>
+        <div style={{color:'#94a3b8',fontSize:12}}>‹</div>
+        <div style={{height:5,borderRadius:3,background:'rgba(255,255,255,.25)',width:50}} />
+        <div style={{color:'#94a3b8',fontSize:12}}>›</div>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:2,padding:'6px'}}>
+        {Array.from({length:28},(_,i)=>(
+          <div key={i} style={{textAlign:'center',padding:'3px 0',fontSize:8,color:i===13?'#fff':'#aaa',background:i===13?'#d9385e':'transparent',borderRadius:4}}>{i+1}</div>
+        ))}
+      </div>
+    </div>
+    <W.Info text="📅 Selected: 27 April · reminder sent 48hrs before" color="amber"/>
+    <W.SLabel text="Assign Tailor"/>
+    {[{active:true},{active:false}].map((t,i)=>(
+      <div key={i} style={{display:'flex',alignItems:'center',gap:7,padding:'7px 10px',margin:'0 8px 5px',borderRadius:8,border:`2px solid ${t.active?'#d9385e':'#e0e0e0'}`,background:t.active?'#fef2f4':'#fff'}}>
+        <W.Avatar size={24} color={t.active?'#d9385e':'#e0e0e0'}/>
+        <div style={{flex:1}}>
+          <div style={{height:6,borderRadius:3,background:'#ddd',width:'55%',marginBottom:2}} />
+          <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'38%'}} />
+        </div>
+        {t.active&&<div style={{width:16,height:16,borderRadius:4,background:'#d9385e'}} />}
+      </div>
+    ))}
+    <W.Btn label="Review Order →" primary/>
+    <W.Nav tabs={5} active={2}/>
+  </Phone>
+);
+
+const OrderReview = () => (
+  <Phone label="Order Review" role="admin">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',padding:'9px 10px 8px',display:'flex',alignItems:'center',gap:7}}>
+      <div style={{width:20,height:20,borderRadius:5,background:'rgba(255,255,255,.15)'}} />
+      <div style={{height:7,borderRadius:3,background:'rgba(255,255,255,.5)',flex:1,maxWidth:100}} />
+      <div style={{width:36,height:14,borderRadius:7,background:'#eff6ff'}} />
+    </div>
+    {['Client','Garment Details','Measurements','Delivery & Tailor'].map((s,i)=>(
+      <W.Card key={i} mb={5}>
+        <div style={{fontSize:9,color:'#aaa',fontWeight:700,fontFamily:"'DM Sans',sans-serif",marginBottom:5}}>{s.toUpperCase()}</div>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <W.Lines n={2} last="55%"/>
+          <div style={{height:5,borderRadius:3,background:'#fecdd3',width:22,marginLeft:8}} />
+        </div>
+      </W.Card>
+    ))}
+    <W.Info text="WhatsApp with order summary will be sent to tailor" color="amber"/>
+    <W.Btn label="Place Order ✓" primary/>
+    <W.Nav tabs={5} active={2}/>
+  </Phone>
+);
+
+const OrderDetail = () => (
+  <Phone label="Order Detail" role="admin">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',padding:'9px 10px 8px',display:'flex',alignItems:'center',gap:7}}>
+      <div style={{width:20,height:20,borderRadius:5,background:'rgba(255,255,255,.15)'}} />
+      <div style={{height:7,borderRadius:3,background:'rgba(255,255,255,.5)',flex:1,maxWidth:120}} />
+      <div style={{height:4,borderRadius:3,background:'rgba(255,255,255,.2)',width:20}} />
+    </div>
+    <div style={{background:'#fffbeb',padding:'7px 10px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+      <div style={{width:48,height:13,borderRadius:7,background:'#fde68a'}} />
+      <div style={{height:4,borderRadius:3,background:'#fde68a',width:40}} />
+    </div>
+    <W.Tabs tabs={['Details','Chat','Invoice']} active={0}/>
+    <W.Card mb={5}>
+      <div style={{display:'flex',alignItems:'center',gap:7,marginBottom:7}}>
+        <W.Avatar size={26} color="#d9385e"/>
+        <div style={{flex:1}}><W.Lines n={2} last="45%"/></div>
+        <div style={{display:'flex',gap:3}}>
+          <div style={{width:22,height:11,borderRadius:5,background:'#fef2f4',border:'1px solid #fecdd3'}} />
+          <div style={{width:28,height:11,borderRadius:5,background:'#fffbeb',border:'1px solid #fde68a'}} />
+        </div>
+      </div>
+      <div style={{height:1,background:'#f0f0f0',marginBottom:7}} />
+      <W.Lines n={2}/>
+    </W.Card>
+    <W.Block h={50} mb={5} style={{border:'1px dashed #ddd',display:'flex',alignItems:'center',justifyContent:'center'}}>
+      <div style={{fontSize:9,color:'#aaa',fontFamily:"'DM Sans',sans-serif"}}>Reference Image</div>
+    </W.Block>
+    <W.SLabel text="Status Update"/>
+    <W.StatusPills active={1}/>
+    <W.SLabel text="Assigned Tailor"/>
+    <div style={{display:'flex',alignItems:'center',gap:7,padding:'4px 8px 8px'}}>
+      <W.Avatar size={24} color="#ecfdf5"/>
+      <div style={{height:5,borderRadius:3,background:'#ddd',width:'45%'}} />
+      <div style={{height:5,borderRadius:3,background:'#fecdd3',width:28,marginLeft:'auto'}} />
+    </div>
+    <W.Nav tabs={5} active={2}/>
+  </Phone>
+);
+
+/* === FLOW 4: CLIENT PROFILE === */
+const ClientProfileOverview = () => (
+  <Phone label="Client Profile — Overview" role="admin">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',padding:'9px 10px 8px',display:'flex',alignItems:'center',gap:7}}>
+      <div style={{width:18,height:18,borderRadius:4,background:'rgba(255,255,255,.2)'}} />
+      <div style={{height:6,borderRadius:3,background:'rgba(255,255,255,.4)',flex:1,maxWidth:90}} />
+      <div style={{color:'#94a3b8',fontSize:14}}>⋮</div>
+    </div>
+    <div style={{background:'#1a1a2e',padding:'8px 10px 14px',display:'flex',alignItems:'center',gap:8}}>
+      <div style={{width:36,height:36,borderRadius:10,background:'#d9385e',flexShrink:0}} />
+      <div style={{flex:1}}>
+        <div style={{height:9,borderRadius:3,background:'rgba(255,255,255,.6)',width:'55%',marginBottom:4}} />
+        <div style={{height:4,borderRadius:3,background:'rgba(255,255,255,.25)',width:'40%',marginBottom:6}} />
+        <div style={{display:'flex',gap:4}}>
+          <div style={{width:30,height:12,borderRadius:6,background:'rgba(255,255,255,.15)'}} />
+          <div style={{width:22,height:12,borderRadius:6,background:'rgba(255,255,255,.15)'}} />
+        </div>
+      </div>
+    </div>
+    <div style={{display:'flex',borderBottom:'1.5px solid #e5e5e5',background:'#fff'}}>
+      {['📞 Call','💬 WA','➕ Order'].map((a,i)=>(
+        <div key={i} style={{flex:1,padding:'7px 2px',textAlign:'center',fontSize:9,color:'#d9385e',fontFamily:"'DM Sans',sans-serif",fontWeight:700,borderRight:i<2?'1px solid #f0f0f0':'none'}}>{a}</div>
+      ))}
+    </div>
+    <W.Tabs tabs={['Overview','Measurements','Orders']} active={0}/>
+    <W.Card mb={5}>
+      <div style={{fontSize:9,color:'#aaa',fontWeight:700,fontFamily:"'DM Sans',sans-serif",marginBottom:6}}>CLIENT SUMMARY</div>
+      <div style={{display:'flex',gap:5}}>
+        {['7 Orders','₹62K','₹8K Pending'].map((s,i)=>(
+          <div key={i} style={{flex:1,background:'#f8f8f8',borderRadius:6,padding:'6px 4px',textAlign:'center',border:'1px solid #eee'}}>
+            <div style={{height:7,borderRadius:3,background:i===2?'#fde68a':'#ddd',width:'60%',margin:'0 auto 2px'}} />
+            <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'40%',margin:'0 auto'}} />
+          </div>
+        ))}
+      </div>
+    </W.Card>
+    <W.Card mb={5}><div style={{fontSize:9,color:'#aaa',fontWeight:700,fontFamily:"'DM Sans',sans-serif",marginBottom:5}}>NOTES</div><W.Lines n={3}/></W.Card>
+    <W.Card mb={5}><div style={{fontSize:9,color:'#aaa',fontWeight:700,fontFamily:"'DM Sans',sans-serif",marginBottom:5}}>DETAILS</div><W.Lines n={3}/></W.Card>
+    <W.Nav tabs={5} active={1}/>
+  </Phone>
+);
+
+const ClientProfileMeasurements = () => (
+  <Phone label="Client Profile — Measurements" role="admin">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',padding:'9px 10px 12px',display:'flex',alignItems:'center',gap:8}}>
+      <div style={{width:18,height:18,borderRadius:4,background:'rgba(255,255,255,.2)'}} />
+      <div style={{height:6,borderRadius:3,background:'rgba(255,255,255,.4)',width:80}} />
+      <div style={{marginLeft:'auto',background:'#d9385e',borderRadius:6,padding:'2px 7px',fontSize:9,fontFamily:"'DM Sans',sans-serif",fontWeight:700,color:'#fff'}}>+ New Set</div>
+    </div>
+    <div style={{display:'flex',gap:4,padding:'7px 8px 5px',background:'#fff',borderBottom:'1px solid #f0f0f0'}}>
+      {['Blouse','Lehenga','Kurti'].map((t,i)=>(
+        <div key={i} style={{padding:'3px 9px',borderRadius:20,background:i===0?'#d9385e':'#f0f0f0',color:i===0?'#fff':'#888',fontSize:10,fontFamily:"'DM Sans',sans-serif",fontWeight:700}}>{t}</div>
+      ))}
+    </div>
+    <W.Tabs tabs={['Overview','Measurements','Orders']} active={1}/>
+    <W.Info text="Updated 14 Apr 2025 by Anika S." color="amber"/>
+    {['Bust','Waist','Hip','Shoulder Width','Sleeve Length','Back Length','Front Length','Armhole'].map((f,i)=>(
+      <W.MeasRow key={i}/>
+    ))}
+    <W.Btn label="Save Changes" primary mb={4}/>
+    <W.Nav tabs={5} active={1}/>
+  </Phone>
+);
+
+const ClientProfileOrders = () => (
+  <Phone label="Client Orders Tab" isNew role="admin" note="New tab showing full order history for this client">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',padding:'9px 10px 12px',display:'flex',alignItems:'center',gap:8}}>
+      <div style={{width:18,height:18,borderRadius:4,background:'rgba(255,255,255,.2)'}} />
+      <div style={{height:6,borderRadius:3,background:'rgba(255,255,255,.4)',width:80}} />
+    </div>
+    <W.Tabs tabs={['Overview','Measurements','Orders']} active={2}/>
+    <W.Chips chips={['All (7)','Active','Completed','Alterations']} active={0}/>
+    {[{s:'prg',alt:false},{s:'fit',alt:true},{s:'cmp',alt:false},{s:'dlv',alt:false}].map((o,i)=>(
+      <div key={i} style={{padding:'8px 10px',borderBottom:'1px solid #f5f5f5',background:'#fff'}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:4}}>
+          <div style={{flex:1,marginRight:8}}>
+            <div style={{display:'flex',alignItems:'center',gap:5,marginBottom:3}}>
+              <div style={{height:6,borderRadius:3,background:'#ddd',width:'55%'}} />
+              {o.alt&&<div style={{width:28,height:10,borderRadius:5,background:'#eff6ff',border:'1px solid #bfdbfe'}} />}
+            </div>
+            <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'40%'}} />
+          </div>
+          <div style={{width:40,height:13,borderRadius:7,background:'#fffbeb',border:'1px solid #fde68a'}} />
+        </div>
+        <div style={{display:'flex',justifyContent:'space-between'}}>
+          <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'35%'}} />
+          <div style={{height:4,borderRadius:3,background:'#ddd',width:'25%'}} />
+        </div>
+      </div>
+    ))}
+    <W.Btn label="+ New Order for Client" primary mb={5}/>
+    <W.Nav tabs={5} active={1}/>
+  </Phone>
+);
+
+const AddClient = () => (
+  <Phone label="Add / Edit Client" role="admin">
+    <W.Status/>
+    <W.Header title="Add Client" back/>
+    <W.Input label="Full Name *" mb={5}/>
+    <W.Input label="Mobile Number *" mb={5}/>
+    <W.SLabel text="Tags"/>
+    <div style={{display:'flex',gap:5,padding:'0 8px 7px'}}>
+      {['VIP','Bridal','Regular','Referral'].map((t,i)=>(
+        <div key={i} style={{padding:'2px 7px',borderRadius:20,border:`1.5px solid ${i===1?'#d9385e':'#e0e0e0'}`,background:i===1?'#fef2f4':'#fff',fontSize:9,fontFamily:"'DM Sans',sans-serif",fontWeight:700,color:i===1?'#d9385e':'#aaa'}}>{t}</div>
+      ))}
+    </div>
+    <W.Textarea label="Notes (optional)" h={38}/>
+    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:5,padding:'0 8px 6px'}}>
+      <W.Input label="Birthday" mb={0}/>
+      <W.Input label="Anniversary" mb={0}/>
+    </div>
+    <W.Btn label="Save Client" primary/>
+    <W.Nav tabs={5} active={1}/>
+  </Phone>
+);
+
+/* === FLOW 5: ALTERATION === */
+const AltClientSelect = () => (
+  <Phone label="Alt: Client Select" role="admin">
+    <W.Status/>
+    <W.Header title="New Alteration" back/>
+    <W.Info text="Client profile measurements will NOT be changed — only order-level changes are recorded." color="blue"/>
+    <W.Steps n={4} done={1}/>
+    <W.StepLabel text="Step 1 of 4 — Select Client"/>
+    <W.Search/>
+    <W.Row hasSub hasTag/>
+    <W.Row hasSub active/>
+    <W.Row hasSub/>
+    <W.Row hasSub last/>
+    <div style={{display:'flex',alignItems:'center',gap:8,padding:'8px 10px',borderTop:'1px solid #f5f5f5'}}>
+      <div style={{width:26,height:26,borderRadius:7,border:'1.5px dashed #ddd',flexShrink:0}} />
+      <div style={{height:5,borderRadius:3,background:'#fecdd3',width:'45%'}} />
+    </div>
+    <W.Btn label="Continue →" primary/>
+    <W.Nav tabs={5} active={2}/>
+  </Phone>
+);
+
+const AltNotes = () => (
+  <Phone label="Alt: Alteration Notes" role="admin">
+    <W.Status/>
+    <W.Header title="New Alteration" back/>
+    <W.Steps n={4} done={2}/>
+    <W.StepLabel text="Step 2 of 4 — Garment & Changes"/>
+    <W.SLabel text="Garment Source"/>
+    <div style={{display:'flex',gap:5,padding:'0 8px 7px'}}>
+      {['Made by us','External garment'].map((t,i)=>(
+        <div key={i} style={{flex:1,padding:'6px',borderRadius:7,border:`2px solid ${i===0?'#d9385e':'#e0e0e0'}`,background:i===0?'#fef2f4':'#fff',textAlign:'center',fontSize:9,fontFamily:"'DM Sans',sans-serif",fontWeight:700,color:i===0?'#d9385e':'#aaa'}}>{t}</div>
+      ))}
+    </div>
+    <W.Input label="Garment Name *" mb={5}/>
+    <W.Textarea label="What needs to be changed? *" h={52}/>
+    <W.Info text="Be specific — e.g. 'take in waist by 2 inches' not 'make smaller'" color="amber"/>
+    <W.Block h={34} mb={5} style={{border:'1.5px dashed #ddd',display:'flex',alignItems:'center',justifyContent:'center'}}>
+      <div style={{fontSize:9,color:'#aaa',fontFamily:"'DM Sans',sans-serif"}}>📷 Photo of garment (optional)</div>
+    </W.Block>
+    <W.Btn label="Continue →" primary/>
+    <W.Nav tabs={5} active={2}/>
+  </Phone>
+);
+
+const AltMeasurements = () => (
+  <Phone label="Alt: Measurements" role="admin">
+    <W.Status/>
+    <W.Header title="New Alteration" back/>
+    <W.Steps n={4} done={3}/>
+    <W.StepLabel text="Step 3 of 4 — Record Measurements"/>
+    <W.Info text="These are stored on this order only. Profile measurements stay unchanged." color="red"/>
+    <div style={{display:'flex',gap:0,padding:'5px 8px 6px'}}>
+      <div style={{flex:1,background:'#f0f0f0',borderRadius:'6px 0 0 6px',padding:'6px 4px',textAlign:'center',border:'1px solid #e0e0e0'}}>
+        <div style={{fontSize:9,fontWeight:700,color:'#888',fontFamily:"'DM Sans',sans-serif"}}>Current (as-is)</div>
+      </div>
+      <div style={{flex:1,background:'#fef2f4',borderRadius:'0 6px 6px 0',padding:'6px 4px',textAlign:'center',border:'1px solid #d9385e',borderLeft:'none'}}>
+        <div style={{fontSize:9,fontWeight:700,color:'#d9385e',fontFamily:"'DM Sans',sans-serif"}}>Target (after)</div>
+      </div>
+    </div>
+    {['Waist','Right Sleeve','Bust (unchanged)'].map((f,i)=>(
+      <div key={i} style={{display:'flex',alignItems:'center',gap:5,padding:'4px 8px',opacity:i===2?.4:1}}>
+        <div style={{height:5,borderRadius:3,background:'#ddd',width:'28%'}} />
+        <div style={{flex:1,height:20,borderRadius:5,background:'#f5f5f5',border:'1.5px solid #e0e0e0'}} />
+        <div style={{fontSize:9,color:'#aaa'}}>→</div>
+        <div style={{flex:1,height:20,borderRadius:5,background:'#fef2f4',border:'1.5px solid #d9385e'}} />
+        <div style={{width:18,height:5,borderRadius:3,background:i===2?'#ddd':'#a7f3d0'}} />
+      </div>
+    ))}
+    <div style={{margin:'4px 8px 5px',borderRadius:7,border:'1.5px dashed #ddd',padding:'7px',textAlign:'center'}}>
+      <div style={{fontSize:9,color:'#aaa',fontFamily:"'DM Sans',sans-serif"}}>+ Add another field</div>
+    </div>
+    <W.Btn label="Continue →" primary/>
+    <W.Btn label="Skip — rely on notes only" primary={false}/>
+    <W.Nav tabs={5} active={2}/>
+  </Phone>
+);
+
+const AltDelivery = () => (
+  <Phone label="Alt: Delivery & Assign" role="admin">
+    <W.Status/>
+    <W.Header title="New Alteration" back/>
+    <W.Steps n={4} done={4}/>
+    <W.StepLabel text="Step 4 of 4 — Delivery & Tailor"/>
+    <W.SLabel text="Delivery Date"/>
+    <div style={{border:'1.5px solid #e0e0e0',borderRadius:8,margin:'0 8px 6px',overflow:'hidden'}}>
+      <div style={{background:'#1a1a2e',padding:'7px 10px',display:'flex',justifyContent:'space-between'}}>
+        <div style={{color:'#94a3b8',fontSize:12}}>‹</div>
+        <div style={{height:5,borderRadius:3,background:'rgba(255,255,255,.25)',width:50}} />
+        <div style={{color:'#94a3b8',fontSize:12}}>›</div>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'repeat(7,1fr)',gap:2,padding:'6px'}}>
+        {Array.from({length:28},(_,i)=>(
+          <div key={i} style={{textAlign:'center',padding:'3px 0',fontSize:8,color:i===11?'#fff':'#aaa',background:i===11?'#d9385e':'transparent',borderRadius:4}}>{i+1}</div>
+        ))}
+      </div>
+    </div>
+    <W.Info text="📅 Reminder sent to client 48 hrs before delivery" color="amber"/>
+    <W.SLabel text="Assign Tailor"/>
+    {[true,false].map((active,i)=>(
+      <div key={i} style={{display:'flex',alignItems:'center',gap:7,padding:'7px 10px',margin:'0 8px 5px',borderRadius:8,border:`2px solid ${active?'#d9385e':'#e0e0e0'}`,background:active?'#fef2f4':'#fff'}}>
+        <W.Avatar size={24} color={active?'#d9385e':'#e0e0e0'}/>
+        <div style={{flex:1}}><div style={{height:5,borderRadius:3,background:'#ddd',width:'55%',marginBottom:2}} /><div style={{height:4,borderRadius:3,background:'#ebebeb',width:'38%'}} /></div>
+        {active&&<div style={{width:14,height:14,borderRadius:4,background:'#d9385e'}} />}
+      </div>
+    ))}
+    <W.Btn label="Review Alteration →" primary/>
+    <W.Nav tabs={5} active={2}/>
+  </Phone>
+);
+
+const AltReview = () => (
+  <Phone label="Alt: Review" role="admin">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',padding:'9px 10px 8px',display:'flex',alignItems:'center',gap:7}}>
+      <div style={{width:18,height:18,borderRadius:4,background:'rgba(255,255,255,.2)'}} />
+      <div style={{height:6,borderRadius:3,background:'rgba(255,255,255,.5)',flex:1,maxWidth:110}} />
+      <div style={{width:36,height:13,borderRadius:7,background:'#eff6ff'}} />
+    </div>
+    {['Client','Garment + Instructions','Measurements (Δ)','Delivery & Tailor'].map((s,i)=>(
+      <W.Card key={i} mb={5}>
+        <div style={{fontSize:9,color:'#aaa',fontWeight:700,fontFamily:"'DM Sans',sans-serif",marginBottom:5}}>{s.toUpperCase()}</div>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
+          <div style={{flex:1,marginRight:8}}><W.Lines n={i===2?3:2} last="55%"/></div>
+          <div style={{height:5,borderRadius:3,background:'#fecdd3',width:22}} />
+        </div>
+      </W.Card>
+    ))}
+    <W.Info text="WhatsApp with instructions & measurements sent to tailor on placement" color="amber"/>
+    <W.Btn label="Place Alteration ✓" primary/>
+    <W.Nav tabs={5} active={2}/>
+  </Phone>
+);
+
+const AltDetail = () => (
+  <Phone label="Alt: Detail (Admin)" role="admin">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',padding:'9px 10px 8px',display:'flex',alignItems:'center',gap:7}}>
+      <div style={{width:18,height:18,borderRadius:4,background:'rgba(255,255,255,.2)'}} />
+      <div style={{height:6,borderRadius:3,background:'rgba(255,255,255,.5)',flex:1,maxWidth:110}} />
+      <div style={{width:36,height:13,borderRadius:7,background:'#eff6ff'}} />
+    </div>
+    <div style={{background:'#fffbeb',padding:'6px 10px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+      <div style={{width:48,height:13,borderRadius:7,background:'#fde68a'}} />
+      <div style={{height:4,borderRadius:3,background:'#fde68a',width:40}} />
+    </div>
+    <W.Tabs tabs={['Details','Chat','Invoice']} active={0}/>
+    <W.Card mb={5}><W.Lines n={2}/></W.Card>
+    <W.Card mb={5}>
+      <div style={{fontSize:9,color:'#aaa',fontWeight:700,fontFamily:"'DM Sans',sans-serif",marginBottom:5}}>TAILOR INSTRUCTIONS</div>
+      <div style={{background:'#f8f8f8',borderRadius:6,padding:'6px 8px',borderLeft:'2.5px solid #d9385e'}}>
+        <W.Lines n={3} last="55%"/>
+      </div>
+    </W.Card>
+    <W.Card mb={5}>
+      <div style={{fontSize:9,color:'#aaa',fontWeight:700,fontFamily:"'DM Sans',sans-serif",marginBottom:5}}>MEASUREMENT CHANGES</div>
+      {['Waist','R. Sleeve'].map((m,i)=>(
+        <div key={i} style={{display:'flex',alignItems:'center',gap:5,marginBottom:4}}>
+          <div style={{height:5,borderRadius:3,background:'#ddd',width:'25%'}} />
+          <div style={{height:5,borderRadius:3,background:'#e0e0e0',width:'15%'}} />
+          <div style={{fontSize:9,color:'#aaa'}}>→</div>
+          <div style={{height:5,borderRadius:3,background:'#d9385e',width:'15%'}} />
+          <div style={{height:5,borderRadius:3,background:'#a7f3d0',width:'18%',marginLeft:'auto'}} />
+        </div>
+      ))}
+    </W.Card>
+    <W.SLabel text="Status"/>
+    <W.StatusPills active={2}/>
+    <W.Btn label="Generate Invoice" primary mb={4}/>
+    <W.Nav tabs={5} active={2}/>
+  </Phone>
+);
+
+/* === FLOW 6: BILLING === */
+const InvoiceView = () => (
+  <Phone label="Invoice View" role="admin">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',padding:'9px 10px 8px',display:'flex',alignItems:'center',gap:7}}>
+      <div style={{width:18,height:18,borderRadius:4,background:'rgba(255,255,255,.2)'}} />
+      <div style={{height:6,borderRadius:3,background:'rgba(255,255,255,.5)',flex:1,maxWidth:100}} />
+      <div style={{width:36,height:13,borderRadius:7,background:'#eff6ff'}} />
+    </div>
+    <div style={{border:'1.5px solid #e5e5e5',borderRadius:8,margin:'8px 8px 6px',overflow:'hidden'}}>
+      <div style={{background:'#1a1a2e',padding:'9px 10px'}}>
+        <div style={{height:7,borderRadius:3,background:'rgba(255,255,255,.6)',width:'55%',marginBottom:3}} />
+        <div style={{height:4,borderRadius:3,background:'rgba(255,255,255,.2)',width:'40%',marginBottom:7}} />
+        <div style={{display:'flex',justifyContent:'space-between'}}>
+          <div><div style={{height:4,borderRadius:3,background:'rgba(255,255,255,.2)',width:24,marginBottom:2}} /><div style={{height:5,borderRadius:3,background:'rgba(255,255,255,.45)',width:40}} /></div>
+          <div style={{textAlign:'right'}}><div style={{height:4,borderRadius:3,background:'rgba(255,255,255,.2)',width:24,marginBottom:2}} /><div style={{height:5,borderRadius:3,background:'rgba(255,255,255,.45)',width:36}} /></div>
+        </div>
+      </div>
+      <div style={{padding:'8px 10px',borderBottom:'1px solid #f0f0f0'}}>
+        <div style={{height:4,borderRadius:3,background:'#ddd',width:'30%',marginBottom:4}} />
+        <div style={{height:6,borderRadius:3,background:'#ccc',width:'55%',marginBottom:2}} />
+        <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'40%'}} />
+      </div>
+      <div style={{padding:'8px 10px',borderBottom:'1px solid #f0f0f0'}}>
+        {['Garment (stitching)','Embroidery work','Finishing'].map((l,i)=>(
+          <div key={i} style={{display:'flex',justifyContent:'space-between',padding:'3px 0',borderBottom:'1px solid #f5f5f5'}}>
+            <div style={{height:5,borderRadius:3,background:'#e0e0e0',width:'55%'}} />
+            <div style={{height:5,borderRadius:3,background:'#ccc',width:'20%'}} />
+          </div>
+        ))}
+      </div>
+      <div style={{padding:'8px 10px'}}>
+        <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
+          <div style={{height:6,borderRadius:3,background:'#ccc',width:'25%'}} />
+          <div style={{height:6,borderRadius:3,background:'#333',width:'25%'}} />
+        </div>
+        <div style={{height:22,borderRadius:7,background:'#ecfdf5',border:'1px solid #a7f3d0'}} />
+      </div>
+    </div>
+    <div style={{display:'flex',gap:5,padding:'0 8px 5px'}}>
+      <W.Btn label="Share WhatsApp" primary mb={0}/>
+      <div style={{width:38,height:28,borderRadius:8,background:'#f0f0f0',border:'1.5px solid #ddd',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+        <div style={{fontSize:9,color:'#888',fontFamily:"'DM Sans',sans-serif"}}>PDF</div>
+      </div>
+    </div>
+    <W.Btn label="Mark as Paid ✓" primary mb={4} color="#059669"/>
+    <W.Nav tabs={5} active={3}/>
+  </Phone>
+);
+
+const BillingHistory = () => (
+  <Phone label="Billing History" role="admin">
+    <W.Status/>
+    <W.Header title="Billing History" action="Export"/>
+    <W.Search/>
+    <W.Chips chips={['All','Paid','Pending','Overdue']} active={0}/>
+    {[{p:true},{p:false},{p:true},{p:false},{p:true}].map((inv,i)=>(
+      <div key={i} style={{display:'flex',alignItems:'center',gap:7,padding:'8px 10px',borderBottom:'1px solid #f5f5f5',background:'#fff'}}>
+        <div style={{flex:1}}>
+          <div style={{display:'flex',alignItems:'center',gap:5,marginBottom:3}}>
+            <div style={{height:6,borderRadius:3,background:'#ddd',width:'45%'}} />
+            <div style={{width:28,height:11,borderRadius:5,background:inv.p?'#ecfdf5':'#fef2f4',border:`1px solid ${inv.p?'#a7f3d0':'#fecdd3'}`}} />
+          </div>
+          <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'35%'}} />
+        </div>
+        <div style={{height:6,borderRadius:3,background:'#ccc',width:30}} />
+      </div>
+    ))}
+    <W.Nav tabs={5} active={3}/>
+  </Phone>
+);
+
+const MarkPaid = () => (
+  <Phone label="Mark as Paid" isNew role="admin" note="Bottom sheet — appears over Invoice View">
+    <W.Status/>
+    <W.Header title="Invoice #INV-0089"/>
+    <W.Block h={60} mb={0} bg="#f5f5f5"/>
+    <div style={{position:'absolute',bottom:0,left:0,right:0,background:'rgba(0,0,0,.4)',top:0,display:'flex',flexDirection:'column',justifyContent:'flex-end'}}>
+      <div style={{background:'#fff',borderRadius:'16px 16px 0 0',padding:'14px 12px'}}>
+        <div style={{width:32,height:4,borderRadius:2,background:'#ddd',margin:'0 auto 12px'}} />
+        <div style={{height:8,borderRadius:3,background:'#1a1a2e',width:'55%',marginBottom:10}} />
+        <W.SLabel text="Payment Method"/>
+        <div style={{display:'flex',gap:5,marginBottom:8}}>
+          {['Cash','UPI','Card','Cheque'].map((m,i)=>(
+            <div key={i} style={{flex:1,padding:'5px 3px',borderRadius:7,border:`2px solid ${i===0?'#d9385e':'#e0e0e0'}`,background:i===0?'#fef2f4':'#fff',textAlign:'center',fontSize:9,fontFamily:"'DM Sans',sans-serif",fontWeight:700,color:i===0?'#d9385e':'#aaa'}}>{m}</div>
+          ))}
+        </div>
+        <W.Input label="Amount Received" mb={5}/>
+        <W.Input label="Transaction / Note (optional)" mb={8}/>
+        <W.Btn label="Confirm Payment ✓" primary mb={0} color="#059669"/>
+      </div>
+    </div>
+  </Phone>
+);
+
+const WhatsAppPreview = () => (
+  <Phone label="WhatsApp Send Preview" isNew role="admin" note="Preview before sending order summary to client">
+    <W.Status/>
+    <W.Header title="Send via WhatsApp" back/>
+    <W.Info text="Preview of message to be sent to Sneha Rao" color="green"/>
+    <div style={{margin:'0 8px 6px',borderRadius:8,background:'#f0fdf4',border:'1.5px solid #a7f3d0',padding:'9px 10px'}}>
+      <div style={{height:6,borderRadius:3,background:'#a7f3d0',width:'70%',marginBottom:5}} />
+      {[0,0,0,0,0].map((_,i)=>(
+        <div key={i} style={{height:5,borderRadius:3,background:'#d1fae5',width:i===4?'50%':'100%',marginBottom:3}} />
+      ))}
+    </div>
+    <W.SLabel text="Send To"/>
+    <div style={{display:'flex',alignItems:'center',gap:7,padding:'5px 8px 8px'}}>
+      <W.Avatar size={26} color="#ecfdf5"/>
+      <div>
+        <div style={{height:6,borderRadius:3,background:'#ddd',width:80,marginBottom:2}} />
+        <div style={{height:4,borderRadius:3,background:'#ebebeb',width:60}} />
+      </div>
+      <div style={{marginLeft:'auto',width:18,height:18,borderRadius:'50%',background:'#a7f3d0',display:'flex',alignItems:'center',justifyContent:'center'}}>
+        <div style={{fontSize:8,color:'#059669',fontWeight:700}}>✓</div>
+      </div>
+    </div>
+    <W.SLabel text="Also attach"/>
+    <div style={{padding:'0 8px 8px',display:'flex',gap:5}}>
+      {['Measurements PDF','Invoice PDF'].map((a,i)=>(
+        <div key={i} style={{flex:1,padding:'6px',borderRadius:7,border:'1.5px solid #e0e0e0',background:'#fff',display:'flex',alignItems:'center',gap:5}}>
+          <div style={{width:16,height:16,borderRadius:4,background:'#f0f0f0'}} />
+          <div style={{height:4,borderRadius:3,background:'#ddd',flex:1}} />
+        </div>
+      ))}
+    </div>
+    <W.Btn label="Send via WhatsApp ↗" primary mb={4} color="#059669"/>
+    <W.Nav tabs={5} active={2}/>
+  </Phone>
+);
+
+/* === FLOW 7: HELP/ASSISTANT === */
+const HelpDash = () => (
+  <Phone label="Help — Dashboard" role="help">
+    <W.Status/>
+    <div style={{padding:'9px 10px 8px',borderBottom:'1.5px solid #e5e5e5',display:'flex',alignItems:'center',justifyContent:'space-between',background:'#fff'}}>
+      <div><div style={{height:5,borderRadius:3,background:'#ddd',width:55,marginBottom:3}} /><div style={{height:7,borderRadius:3,background:'#1a1a2e',width:90}} /></div>
+      <div style={{width:26,height:26,borderRadius:7,background:'#eff6ff'}} />
+    </div>
+    <W.Info text="Revenue and billing are visible to Admins only." color="amber"/>
+    <W.SLabel text="Order Pipeline"/>
+    <div style={{display:'flex',gap:5,padding:'0 8px 8px',overflow:'hidden'}}>
+      {['Received','In Progress','Fitting'].map((s,i)=>(
+        <div key={i} style={{flex:1,background:'#f5f5f5',borderRadius:7,padding:'6px',minHeight:60}}>
+          <div style={{fontSize:8,color:'#aaa',fontWeight:700,fontFamily:"'DM Sans',sans-serif",marginBottom:4}}>{s}</div>
+          {[1,i<2?1:0].filter(Boolean).map((_,j)=>(
+            <div key={j} style={{background:'#fff',borderRadius:5,padding:'5px',border:'1px solid #eee',marginBottom:4}}>
+              <div style={{height:5,borderRadius:3,background:'#ddd',width:'80%',marginBottom:2}} />
+              <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'60%'}} />
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+    <W.SLabel text="Quick Actions"/>
+    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:5,padding:'0 8px 8px'}}>
+      {['New Client','Measurements','New Order','All Orders'].map((a,i)=>(
+        <div key={i} style={{background:'#fff',borderRadius:7,padding:'8px',border:'1px solid #eee',display:'flex',alignItems:'center',gap:5}}>
+          <div style={{width:16,height:16,borderRadius:4,background:'#f0f0f0'}} />
+          <div style={{height:5,borderRadius:3,background:'#ddd',flex:1}} />
+        </div>
+      ))}
+    </div>
+    <W.SLabel text="Today's Reminders"/>
+    {[0,1].map(i=>(
+      <div key={i} style={{display:'flex',gap:7,padding:'6px 10px',background:'#fff',border:'1px solid #f0f0f0',margin:'0 8px 5px',borderRadius:7}}>
+        <div style={{width:20,height:20,borderRadius:5,background:'#fffbeb',flexShrink:0}} />
+        <div style={{flex:1}}><div style={{height:5,borderRadius:3,background:'#ddd',width:'70%',marginBottom:2}} /><div style={{height:4,borderRadius:3,background:'#ebebeb',width:'50%'}} /></div>
+      </div>
+    ))}
+    <W.Nav tabs={3} active={0} role="help"/>
+  </Phone>
+);
+
+const HelpOrders = () => (
+  <Phone label="Help — Orders" role="help">
+    <W.Status/>
+    <W.Header title="All Orders" dark action="Filter"/>
+    <W.Search/>
+    <W.Chips chips={['All (14)','In Progress','Fitting','Done']} active={0}/>
+    {[{hasAlt:false},{hasAlt:true},{hasAlt:false}].map((o,i)=>(
+      <div key={i} style={{border:'1.5px solid #e5e5e5',borderRadius:8,margin:'0 8px 6px',padding:'8px',background:'#fff'}}>
+        <div style={{display:'flex',justifyContent:'space-between',marginBottom:5}}>
+          <div style={{flex:1,marginRight:8}}>
+            <div style={{display:'flex',alignItems:'center',gap:5,marginBottom:3}}>
+              <div style={{height:6,borderRadius:3,background:'#ddd',width:'50%'}} />
+              {o.hasAlt&&<div style={{width:28,height:10,borderRadius:5,background:'#eff6ff',border:'1px solid #bfdbfe'}} />}
+            </div>
+            <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'38%'}} />
+          </div>
+          <div style={{width:44,height:13,borderRadius:7,background:'#fffbeb',border:'1px solid #fde68a'}} />
+        </div>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <div style={{width:30,height:11,borderRadius:5,background:'#f8fafc',border:'1px solid #e2e8f0'}} />
+          <div style={{height:20,width:60,borderRadius:6,background:'#f0f0f0',border:'1px solid #e0e0e0'}} />
+        </div>
+      </div>
+    ))}
+    <W.Info text="Billing and invoice screens are Admin only." color="red"/>
+    <W.Nav tabs={3} active={2} role="help"/>
+  </Phone>
+);
+
+const HelpOrderDetail = () => (
+  <Phone label="Help — Order Detail" role="help">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',padding:'9px 10px 8px',display:'flex',alignItems:'center',gap:7}}>
+      <div style={{width:18,height:18,borderRadius:4,background:'rgba(255,255,255,.2)'}} />
+      <div style={{height:6,borderRadius:3,background:'rgba(255,255,255,.5)',flex:1,maxWidth:110}} />
+    </div>
+    <div style={{background:'#fffbeb',padding:'6px 10px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+      <div style={{width:48,height:13,borderRadius:7,background:'#fde68a'}} />
+      <div style={{height:4,borderRadius:3,background:'#fde68a',width:38}} />
+    </div>
+    <W.Tabs tabs={['Details','Chat']} active={0}/>
+    <W.Card mb={5}>
+      <div style={{display:'flex',alignItems:'center',gap:7,marginBottom:6}}>
+        <W.Avatar size={24} color="#d9385e"/>
+        <div style={{flex:1}}><W.Lines n={2} last="50%"/></div>
+        <div style={{display:'flex',gap:3}}><div style={{width:22,height:11,borderRadius:5,background:'#fef2f4',border:'1px solid #fecdd3'}} /><div style={{width:28,height:11,borderRadius:5,background:'#fffbeb',border:'1px solid #fde68a'}} /></div>
+      </div>
+      <W.Lines n={2}/>
+    </W.Card>
+    <W.Card mb={5}><div style={{fontSize:9,color:'#aaa',fontWeight:700,fontFamily:"'DM Sans',sans-serif",marginBottom:5}}>MEASUREMENTS</div><div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:5}}>{['Bust','Waist','Hip','Length'].map((_,i)=><div key={i} style={{background:'#f8f8f8',borderRadius:5,padding:'5px',textAlign:'center',border:'1px solid #eee'}}><div style={{height:6,borderRadius:3,background:'#ddd',width:'50%',margin:'0 auto'}} /></div>)}</div></W.Card>
+    <W.SLabel text="Update Status"/>
+    <W.StatusPills active={1}/>
+    <W.Info text="Invoice and payment data is Admin only." color="red"/>
+    <W.Nav tabs={3} active={2} role="help"/>
+  </Phone>
+);
+
+const HelpSettings = () => (
+  <Phone label="Help — Settings" role="help">
+    <W.Status/>
+    <W.Header title="Settings"/>
+    <div style={{background:'#1a1a2e',padding:'10px',display:'flex',alignItems:'center',gap:8}}>
+      <div style={{width:36,height:36,borderRadius:10,background:'#eff6ff',flexShrink:0}} />
+      <div><div style={{height:6,borderRadius:3,background:'rgba(255,255,255,.5)',width:80,marginBottom:3}} /><div style={{height:4,borderRadius:3,background:'rgba(255,255,255,.2)',width:110}} /></div>
+    </div>
+    <W.SLabel text="My Profile"/>
+    <W.Input label="Display Name" mb={5}/>
+    <W.Input label="WhatsApp Number" mb={5}/>
+    <W.Btn label="Save Changes" primary={false} mb={8}/>
+    <W.SLabel text="Security"/>
+    <W.Input label="Current PIN" mb={4}/>
+    <W.Input label="New PIN" mb={4}/>
+    <W.Input label="Confirm New PIN" mb={8}/>
+    <W.Btn label="Update PIN" primary/>
+    <W.Info text="Business settings, templates, staff and billing are Admin only." color="red"/>
+    <W.Nav tabs={3} active={2} role="help"/>
+  </Phone>
+);
+
+/* === FLOW 8: TAILOR === */
+const TailorOrders = () => (
+  <Phone label="Tailor — My Orders" role="tailor">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',padding:'9px 10px 8px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+      <div><div style={{height:5,borderRadius:3,background:'rgba(255,255,255,.3)',width:55,marginBottom:3}} /><div style={{height:7,borderRadius:3,background:'rgba(255,255,255,.6)',width:100}} /></div>
+      <div style={{width:26,height:26,borderRadius:7,background:'#ecfdf5'}} />
+    </div>
+    <W.Info text="Showing only your assigned orders" color="green"/>
+    <div style={{margin:'5px 8px',borderRadius:8,background:'#fffbeb',border:'1px solid #fde68a',padding:'8px',display:'flex',gap:7}}>
+      <div style={{width:20,height:20,borderRadius:5,background:'#fde68a',flexShrink:0}} />
+      <div style={{flex:1}}><div style={{height:6,borderRadius:3,background:'#fde68a',width:'70%',marginBottom:3}} /><div style={{height:4,borderRadius:3,background:'#fde68a',width:'55%'}} /></div>
+    </div>
+    <W.SLabel text="My Active Orders (3)"/>
+    {[{urgent:true},{alt:true},{urgent:false}].map((o,i)=>(
+      <div key={i} style={{border:'1.5px solid #e5e5e5',borderRadius:8,margin:'0 8px 6px',padding:'8px',background:'#fff'}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:6}}>
+          <div style={{flex:1,marginRight:8}}>
+            <div style={{display:'flex',alignItems:'center',gap:5,marginBottom:3}}>
+              <div style={{height:6,borderRadius:3,background:'#ddd',width:'55%'}} />
+              {o.alt&&<div style={{width:28,height:10,borderRadius:5,background:'#eff6ff',border:'1px solid #bfdbfe'}} />}
+            </div>
+            <div style={{height:4,borderRadius:3,background:o.urgent?'#fde68a':'#ebebeb',width:'50%'}} />
+          </div>
+          <div style={{width:44,height:13,borderRadius:7,background:'#fffbeb',border:'1px solid #fde68a'}} />
+        </div>
+        <div style={{display:'flex',gap:5}}>
+          <div style={{flex:1,height:26,borderRadius:7,background:'#d9385e',display:'flex',alignItems:'center',justifyContent:'center'}}><div style={{height:4,borderRadius:3,background:'rgba(255,255,255,.5)',width:'50%'}} /></div>
+          <div style={{flex:1,height:26,borderRadius:7,background:'#f0f0f0',border:'1px solid #e0e0e0'}} />
+        </div>
+      </div>
+    ))}
+    <W.SLabel text="Completed"/>
+    <div style={{padding:'7px 10px',opacity:.6,display:'flex',justifyContent:'space-between',alignItems:'center',margin:'0 8px',border:'1px solid #f0f0f0',borderRadius:8,background:'#fff'}}>
+      <div><div style={{height:5,borderRadius:3,background:'#ddd',width:70,marginBottom:2}} /><div style={{height:4,borderRadius:3,background:'#ebebeb',width:50}} /></div>
+      <div style={{width:44,height:13,borderRadius:7,background:'#ecfdf5',border:'1px solid #a7f3d0'}} />
+    </div>
+    <W.Nav tabs={2} active={0} role="tailor"/>
+  </Phone>
+);
+
+const TailorOrderDetail = () => (
+  <Phone label="Tailor — Order Detail" role="tailor">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',padding:'9px 10px 8px',display:'flex',alignItems:'center',gap:7}}>
+      <div style={{width:18,height:18,borderRadius:4,background:'rgba(255,255,255,.2)'}} />
+      <div style={{height:6,borderRadius:3,background:'rgba(255,255,255,.5)',flex:1,maxWidth:110}} />
+    </div>
+    <div style={{background:'#fffbeb',padding:'6px 10px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+      <div style={{width:48,height:13,borderRadius:7,background:'#fde68a'}} />
+      <div style={{height:4,borderRadius:3,background:'#fde68a',width:38}} />
+    </div>
+    <W.Tabs tabs={['Details','Chat']} active={0}/>
+    <W.Card mb={5}>
+      <W.Lines n={2} last="50%"/>
+      <div style={{height:1,background:'#f0f0f0',margin:'6px 0'}} />
+      <W.Lines n={3}/>
+      <div style={{display:'flex',gap:4,marginTop:5}}>
+        <div style={{width:22,height:11,borderRadius:5,background:'#fef2f4',border:'1px solid #fecdd3'}} />
+        <div style={{width:28,height:11,borderRadius:5,background:'#fffbeb',border:'1px solid #fde68a'}} />
+      </div>
+    </W.Card>
+    <W.Block h={40} mb={5} style={{border:'1px dashed #ddd',display:'flex',alignItems:'center',justifyContent:'center'}}>
+      <div style={{fontSize:9,color:'#aaa',fontFamily:"'DM Sans',sans-serif"}}>Reference Image</div>
+    </W.Block>
+    <W.Card mb={5}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
+        <div style={{fontSize:9,color:'#aaa',fontWeight:700,fontFamily:"'DM Sans',sans-serif"}}>MEASUREMENTS (READ ONLY)</div>
+        <div style={{background:'#f0f0f0',borderRadius:5,padding:'1px 5px',fontSize:8,fontFamily:"'DM Sans',sans-serif",color:'#888'}}>🔒</div>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:4}}>
+        {4..toString().padStart(4,'0').split('').map((_,i)=>(
+          <div key={i} style={{background:'#f8f8f8',borderRadius:5,padding:'6px',textAlign:'center',border:'1px solid #eee'}}>
+            <div style={{height:7,borderRadius:3,background:'#ddd',width:'50%',margin:'0 auto 2px'}} />
+            <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'38%',margin:'0 auto'}} />
+          </div>
+        ))}
+      </div>
+    </W.Card>
+    <W.SLabel text="Update Status"/>
+    <W.StatusPills active={1}/>
+    <W.Info text="Client contact, billing, and full profile are not visible to Tailor." color="red"/>
+    <W.Nav tabs={2} active={0} role="tailor"/>
+  </Phone>
+);
+
+const TailorAltDetail = () => (
+  <Phone label="Tailor — Alt Detail" role="tailor">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',padding:'9px 10px 8px',display:'flex',alignItems:'center',gap:7}}>
+      <div style={{width:18,height:18,borderRadius:4,background:'rgba(255,255,255,.2)'}} />
+      <div style={{height:6,borderRadius:3,background:'rgba(255,255,255,.5)',flex:1,maxWidth:110}} />
+      <div style={{width:36,height:13,borderRadius:7,background:'#eff6ff'}} />
+    </div>
+    <W.Tabs tabs={['Details','Chat']} active={0}/>
+    <W.Card mb={5}>
+      <div style={{fontSize:9,color:'#aaa',fontWeight:700,fontFamily:"'DM Sans',sans-serif",marginBottom:5}}>INSTRUCTIONS</div>
+      <div style={{background:'#f8f8f8',borderRadius:6,padding:'6px 8px',borderLeft:'2.5px solid #d9385e'}}>
+        <W.Lines n={3} last="60%"/>
+      </div>
+    </W.Card>
+    <W.Card mb={5}>
+      <div style={{fontSize:9,color:'#aaa',fontWeight:700,fontFamily:"'DM Sans',sans-serif",marginBottom:5}}>MEASUREMENTS TO CHANGE</div>
+      {['Waist: 30→28 in (-2")','Right Sleeve: 23.5→22 in (-1.5")'].map((m,i)=>(
+        <div key={i} style={{display:'flex',alignItems:'center',gap:5,marginBottom:4}}>
+          <div style={{height:5,borderRadius:3,background:'#ddd',width:'30%'}} />
+          <div style={{height:5,borderRadius:3,background:'#e0e0e0',width:'18%'}} />
+          <div style={{fontSize:8,color:'#aaa'}}>→</div>
+          <div style={{height:5,borderRadius:3,background:'#d9385e',width:'18%'}} />
+          <div style={{height:5,borderRadius:3,background:'#a7f3d0',width:'15%',marginLeft:'auto'}} />
+        </div>
+      ))}
+    </W.Card>
+    <W.SLabel text="Update Status"/>
+    <W.StatusPills active={2}/>
+    <W.Nav tabs={2} active={0} role="tailor"/>
+  </Phone>
+);
+
+const Chat = () => (
+  <Phone label="Order Chat" role="all">
+    <W.Status/>
+    <div style={{background:'#1a1a2e',padding:'9px 10px 8px',display:'flex',alignItems:'center',gap:7}}>
+      <div style={{width:18,height:18,borderRadius:4,background:'rgba(255,255,255,.2)'}} />
+      <div style={{flex:1}}>
+        <div style={{height:6,borderRadius:3,background:'rgba(255,255,255,.5)',width:'60%',marginBottom:2}} />
+        <div style={{height:4,borderRadius:3,background:'rgba(255,255,255,.2)',width:'45%'}} />
+      </div>
+      <div style={{width:14,height:14,borderRadius:3,background:'rgba(255,255,255,.15)'}} />
+    </div>
+    <div style={{flex:1,padding:'8px 0',display:'flex',flexDirection:'column',gap:3,background:'#f5f0e8',minHeight:160}}>
+      <div style={{fontSize:9,color:'#aaa',fontFamily:"'DM Sans',sans-serif",textAlign:'center',padding:'2px 0'}}>Today, 9:00 AM</div>
+      <W.Bubble out={false} lines={2}/>
+      <W.Bubble out={true} lines={1}/>
+      <W.Bubble out={false} lines={2}/>
+      <W.Bubble out={true} lines={1}/>
+      <W.Bubble out={false} lines={2}/>
+      <W.Bubble out={true} lines={1}/>
+    </div>
+    <div style={{background:'#fff',borderTop:'1.5px solid #e5e5e5',padding:'7px 8px',display:'flex',alignItems:'center',gap:7}}>
+      <div style={{flex:1,background:'#f5f5f5',borderRadius:20,height:26,border:'1.5px solid #e0e0e0'}} />
+      <div style={{width:26,height:26,borderRadius:'50%',background:'#d9385e',flexShrink:0}} />
+    </div>
+    <W.Nav tabs={2} active={1} role="tailor"/>
+  </Phone>
+);
+
+const TailorSettings = () => (
+  <Phone label="Tailor — Settings" role="tailor">
+    <W.Status/>
+    <W.Header title="Settings"/>
+    <div style={{background:'#1a1a2e',padding:'10px',display:'flex',alignItems:'center',gap:8}}>
+      <div style={{width:36,height:36,borderRadius:10,background:'#ecfdf5',flexShrink:0}} />
+      <div><div style={{height:6,borderRadius:3,background:'rgba(255,255,255,.5)',width:80,marginBottom:3}} /><div style={{height:4,borderRadius:3,background:'rgba(255,255,255,.2)',width:110}} /></div>
+    </div>
+    <W.SLabel text="My Profile"/>
+    <W.Input label="Display Name" mb={5}/>
+    <W.Btn label="Save Name" primary={false} mb={8}/>
+    <W.SLabel text="Security"/>
+    <W.Input label="Current PIN" mb={4}/>
+    <W.Input label="New PIN" mb={4}/>
+    <W.Input label="Confirm PIN" mb={8}/>
+    <W.Btn label="Update PIN" primary/>
+    <W.Info text="For all other changes, contact your admin." color="green"/>
+    <W.Nav tabs={3} active={2} role="tailor"/>
+  </Phone>
+);
+
+/* === FLOW 9: GAPS & MISSING === */
+const TrialExpiry = () => (
+  <Phone label="Trial Expiry Screen" isNew role="admin" note="Day 15+ — app enters read-only mode">
+    <W.Status/>
+    <W.Header title="alternote"/>
+    <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:'rgba(15,23,42,.88)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:16}}>
+      <div style={{width:36,height:36,borderRadius:10,background:'#f59e0b',marginBottom:10}} />
+      <div style={{height:9,borderRadius:3,background:'rgba(255,255,255,.7)',width:'70%',marginBottom:5}} />
+      <div style={{height:5,borderRadius:3,background:'rgba(255,255,255,.35)',width:'55%',marginBottom:3}} />
+      <div style={{height:5,borderRadius:3,background:'rgba(255,255,255,.35)',width:'65%',marginBottom:16}} />
+      <div style={{background:'#f59e0b',borderRadius:9,padding:'9px 16px',marginBottom:7,width:'100%',textAlign:'center'}}>
+        <div style={{height:7,borderRadius:3,background:'rgba(255,255,255,.6)',width:'65%',margin:'0 auto'}} />
+      </div>
+      <div style={{height:5,borderRadius:3,background:'rgba(255,255,255,.25)',width:'55%'}} />
+      <div style={{marginTop:14,background:'rgba(255,255,255,.1)',borderRadius:8,padding:'8px 10px',width:'100%'}}>
+        <div style={{height:4,borderRadius:3,background:'rgba(255,255,255,.3)',width:'80%',marginBottom:3}} />
+        <div style={{height:4,borderRadius:3,background:'rgba(255,255,255,.3)',width:'60%'}} />
+      </div>
+    </div>
+  </Phone>
+);
+
+const GlobalSearch = () => (
+  <Phone label="Global Search" isNew role="admin" note="Search across clients, orders & invoices">
+    <W.Status/>
+    <div style={{padding:'9px 8px',background:'#fff',borderBottom:'1.5px solid #e5e5e5'}}>
+      <div style={{borderRadius:10,background:'#f5f5f5',height:30,border:'1.5px solid #d9385e',display:'flex',alignItems:'center',padding:'0 10px',gap:7}}>
+        <div style={{width:12,height:12,borderRadius:'50%',border:'2px solid #d9385e'}} />
+        <div style={{flex:1,height:5,borderRadius:3,background:'#ddd'}} />
+        <div style={{width:10,height:10,borderRadius:3,background:'#e0e0e0'}} />
+      </div>
+    </div>
+    <W.SLabel text="Recent Searches"/>
+    {['Meera Kapoor','INV-0088','Blouse alteration'].map((r,i)=>(
+      <div key={i} style={{display:'flex',alignItems:'center',gap:7,padding:'6px 10px',borderBottom:'1px solid #f5f5f5'}}>
+        <div style={{width:16,height:16,borderRadius:4,background:'#f0f0f0'}} />
+        <div style={{height:5,borderRadius:3,background:'#ddd',width:'60%'}} />
+        <div style={{height:4,borderRadius:3,background:'#e0e0e0',width:16,marginLeft:'auto'}} />
+      </div>
+    ))}
+    <div style={{height:1,background:'#eee',margin:'4px 0'}} />
+    <W.SLabel text="Results for 'Meera'"/>
+    <W.SLabel text="Clients"/>
+    <W.Row hasSub hasTag/>
+    <W.SLabel text="Orders"/>
+    <W.OrderCard status="prg" hasTags/>
+    <W.OrderCard status="cmp"/>
+    <W.SLabel text="Invoices"/>
+    <div style={{display:'flex',alignItems:'center',gap:7,padding:'6px 10px',borderBottom:'1px solid #f5f5f5'}}>
+      <div style={{width:26,height:26,borderRadius:7,background:'#ecfdf5',flexShrink:0}} />
+      <div style={{flex:1}}><div style={{height:5,borderRadius:3,background:'#ddd',width:'60%',marginBottom:2}} /><div style={{height:4,borderRadius:3,background:'#ebebeb',width:'40%'}} /></div>
+      <div style={{height:5,borderRadius:3,background:'#ccc',width:28}} />
+    </div>
+    <W.Nav tabs={5} active={0}/>
+  </Phone>
+);
+
+const OverdueAlert = () => (
+  <Phone label="Overdue Orders Alert" isNew role="admin" note="Surfaces overdue + near-due orders prominently">
+    <W.Status/>
+    <W.Header title="Overdue & Due Soon" back/>
+    <W.Info text="2 orders are overdue · 3 due within 48 hours" color="red"/>
+    <W.SLabel text="Overdue (2)"/>
+    {[0,1].map(i=>(
+      <div key={i} style={{border:'2px solid #fecdd3',borderRadius:8,margin:'0 8px 6px',padding:'8px',background:'#fef2f4'}}>
+        <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
+          <div style={{height:6,borderRadius:3,background:'#fca5a5',width:'55%'}} />
+          <div style={{height:5,borderRadius:3,background:'#ef4444',width:'25%'}} />
+        </div>
+        <div style={{height:4,borderRadius:3,background:'#fecdd3',width:'40%',marginBottom:6}} />
+        <div style={{display:'flex',gap:5}}>
+          <div style={{flex:1,height:24,borderRadius:6,background:'#d9385e'}} />
+          <div style={{flex:1,height:24,borderRadius:6,background:'#fff',border:'1px solid #fecdd3'}} />
+        </div>
+      </div>
+    ))}
+    <W.SLabel text="Due in 48 Hours (3)"/>
+    {[0,1,2].map(i=>(
+      <div key={i} style={{border:'1.5px solid #fde68a',borderRadius:8,margin:'0 8px 6px',padding:'8px',background:'#fffbeb'}}>
+        <div style={{display:'flex',justifyContent:'space-between',marginBottom:3}}>
+          <div style={{height:6,borderRadius:3,background:'#fde68a',width:'50%'}} />
+          <div style={{height:5,borderRadius:3,background:'#f59e0b',width:'22%'}} />
+        </div>
+        <div style={{height:4,borderRadius:3,background:'#fde68a',width:'38%'}} />
+      </div>
+    ))}
+    <W.Nav tabs={5} active={0}/>
+  </Phone>
+);
+
+const EmptyState = () => (
+  <Phone label="Empty State — New User" isNew role="admin" note="First time user — no orders yet">
+    <W.Status/>
+    <W.Header title="Orders"/>
+    <W.Chips chips={['All (0)','In Progress','Fitting','Done']} active={0}/>
+    <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'36px 16px',minHeight:200}}>
+      <div style={{width:48,height:48,borderRadius:14,background:'#f0f0f0',marginBottom:12,display:'flex',alignItems:'center',justifyContent:'center'}}>
+        <div style={{width:24,height:24,borderRadius:6,background:'#ddd'}} />
+      </div>
+      <div style={{height:8,borderRadius:3,background:'#ddd',width:'60%',marginBottom:5}} />
+      <div style={{height:5,borderRadius:3,background:'#ebebeb',width:'75%',marginBottom:3}} />
+      <div style={{height:5,borderRadius:3,background:'#ebebeb',width:'60%',marginBottom:18}} />
+      <W.Btn label="Create First Order" primary mb={5}/>
+      <W.Btn label="Add First Client" primary={false} mb={0}/>
+    </div>
+    <W.Nav tabs={5} active={2}/>
+  </Phone>
+);
+
+const StaffPINReset = () => (
+  <Phone label="Staff PIN Reset" isNew role="admin" note="Admin resets a team member's PIN in Settings → Staff">
+    <W.Status/>
+    <W.Header title="Team Members" back action="+ Add"/>
+    <W.Search/>
+    {[{c:'#d9385e',role:'Admin'},{c:'#eff6ff',role:'Tailor'},{c:'#fffbeb',role:'Tailor'}].map((s,i)=>(
+      <div key={i} style={{display:'flex',alignItems:'center',gap:7,padding:'8px 10px',borderBottom:'1px solid #f5f5f5',background:'#fff'}}>
+        <div style={{width:28,height:28,borderRadius:8,background:s.c,flexShrink:0}} />
+        <div style={{flex:1}}>
+          <div style={{height:6,borderRadius:3,background:'#ddd',width:'55%',marginBottom:2}} />
+          <div style={{height:4,borderRadius:3,background:'#ebebeb',width:'30%'}} />
+        </div>
+        <div style={{display:'flex',gap:5}}>
+          <div style={{height:20,width:36,borderRadius:6,background:'#f0f0f0',border:'1px solid #e0e0e0'}} />
+          <div style={{height:20,width:36,borderRadius:6,background:'#fef2f4',border:'1px solid #fecdd3'}} />
+        </div>
+      </div>
+    ))}
+    <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,.4)',display:'flex',flexDirection:'column',justifyContent:'flex-end'}}>
+      <div style={{background:'#fff',borderRadius:'16px 16px 0 0',padding:'14px 12px'}}>
+        <div style={{width:32,height:4,borderRadius:2,background:'#ddd',margin:'0 auto 12px'}} />
+        <div style={{height:7,borderRadius:3,background:'#1a1a2e',width:'65%',marginBottom:4}} />
+        <div style={{height:5,borderRadius:3,background:'#ebebeb',width:'80%',marginBottom:10}} />
+        <W.Input label="New PIN (4–6 digits)" mb={4}/>
+        <W.Input label="Confirm New PIN" mb={8}/>
+        <div style={{display:'flex',gap:5}}>
+          <W.Btn label="Reset PIN" primary mb={0}/>
+          <div style={{width:44,height:28,borderRadius:8,background:'#f0f0f0',border:'1.5px solid #ddd'}} />
+        </div>
+      </div>
+    </div>
+  </Phone>
+);
+
+/* ─────────────────────────────────────
+   LEGEND
+───────────────────────────────────── */
+const Legend = () => (
+  <div style={{marginBottom:48,padding:'16px 20px',background:'#fff',borderRadius:12,border:'2px solid #1a1a2e',boxShadow:'4px 4px 0 #1a1a2e',display:'flex',flexWrap:'wrap',gap:14,alignItems:'center'}}>
+    <div style={{fontFamily:"'DM Serif Display',serif",fontSize:22,fontWeight:400,color:'#1a1a2e',marginRight:8}}>alternote — Mobile Wireframes</div>
+    {[{c:'#d9385e',l:'Admin'},{c:'#2563eb',l:'Help/Asst'},{c:'#059669',l:'Tailor'},{c:'#7c3aed',l:'All Roles'},{c:'#334155',l:'Onboarding'}].map((r,i)=>(
+      <div key={i} style={{display:'flex',alignItems:'center',gap:5}}>
+        <div style={{width:10,height:10,borderRadius:3,background:r.c}} />
+        <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:13,color:'#555'}}>{r.l}</div>
+      </div>
+    ))}
+    <div style={{display:'flex',alignItems:'center',gap:5}}>
+      <div style={{background:'#f59e0b',color:'#fff',fontSize:10,padding:'1px 7px',borderRadius:10,fontWeight:700,fontFamily:"'DM Sans',sans-serif"}}>NEW</div>
+      <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:13,color:'#555'}}>Missing / suggested screen</div>
+    </div>
+    <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:12,color:'#aaa',marginLeft:'auto'}}>48 screens · 9 flows · Mobile only</div>
+  </div>
+);
+
+/* ─────────────────────────────────────
+   APP
+───────────────────────────────────── */
+const App = () => (
+  <div>
+    <Legend/>
+
+    <FlowSection num="1" title="Onboarding" desc="First-time user setup — 8 screens" role="onboarding">
+      <Splash/><Arr label="Get Started"/><Login/><Arr label="Forgot password"/><OTPVerify/><Arr label="Verified"/><ProfileSelect/><Arr label="PIN ok"/>
+      <div style={{display:'flex',flexWrap:'wrap',gap:20,alignItems:'flex-start',width:'100%',marginTop:20}}>
+        <BizSetup/><Arr label="Step 2"/><TemplateSetup/><Arr label="Step 3"/><StaffSetup/><Arr label="Done"/><OnboardDone/>
+      </div>
+    </FlowSection>
+
+    <FlowSection num="2" title="Admin — Daily Loop" desc="Core navigation + quick actions — 6 screens" role="admin">
+      <Dashboard/><Arr label="Bell tap"/><Notifications/><Arr/><ClientList/><Arr/><OrderList/><Arr/><Analytics/><Arr/><Settings/>
+    </FlowSection>
+
+    <FlowSection num="3" title="Admin — New Order Flow" desc="Creating a new tailoring order — 7 screens" role="admin">
+      <OrderS1/><Arr label="Client"/><OrderS2/><Arr label="Garment"/><OrderS3/><Arr label="Meas."/><OrderS4/><Arr label="Delivery"/><OrderReview/><Arr label="Placed"/><OrderDetail/>
+    </FlowSection>
+
+    <FlowSection num="4" title="Admin — Client Management" desc="Client profile, history, measurements — 5 screens" role="admin">
+      <ClientList/><Arr label="Tap client"/><ClientProfileOverview/><Arr label="Measurements tab"/><ClientProfileMeasurements/><Arr label="Orders tab"/><ClientProfileOrders/><Arr/><AddClient/>
+    </FlowSection>
+
+    <FlowSection num="5" title="Admin — Alteration Flow" desc="Recording alterations on existing garments — 7 screens" role="admin">
+      <AltClientSelect/><Arr label="Client"/><AltNotes/><Arr label="Notes"/><AltMeasurements/><Arr label="Δ Meas."/><AltDelivery/><Arr label="Delivery"/>
+      <div style={{display:'flex',flexWrap:'wrap',gap:20,alignItems:'flex-start',width:'100%',marginTop:20}}>
+        <AltReview/><Arr label="Placed"/><AltDetail/>
+      </div>
+    </FlowSection>
+
+    <FlowSection num="6" title="Admin — Billing" desc="Invoices, payments, WhatsApp sharing — 4 screens" role="admin">
+      <InvoiceView/><Arr label="Mark Paid"/><MarkPaid/><Arr label="Confirmed"/><BillingHistory/><Arr label="Share"/><WhatsAppPreview/>
+    </FlowSection>
+
+    <FlowSection num="7" title="Help / Assistant" desc="Restricted role — no billing — 4 screens" role="help">
+      <HelpDash/><Arr/><HelpOrders/><Arr/><HelpOrderDetail/><Arr/><HelpSettings/>
+    </FlowSection>
+
+    <FlowSection num="8" title="Tailor" desc="Assigned orders only — read-only measurements — 5 screens" role="tailor">
+      <TailorOrders/><Arr/><TailorOrderDetail/><Arr/><TailorAltDetail/><Arr/><Chat/><Arr/><TailorSettings/>
+    </FlowSection>
+
+    <FlowSection num="9" title="Gaps & Missing Screens" desc="Screens not yet in the prototype — all new" role="gap">
+      <TrialExpiry/><GlobalSearch/><OverdueAlert/><EmptyState/><StaffPINReset/>
+    </FlowSection>
+  </div>
+);
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

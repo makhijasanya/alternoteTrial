@@ -1,0 +1,132 @@
+/* AlterNote — Global Styles */
+@import './tokens.css';
+@import './animations.css';
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-ui);
+  background: var(--dn-2);
+  color: var(--dn);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#root {
+  height: 100vh;
+  overflow: hidden;
+}
+
+button {
+  font-family: var(--font-ui);
+  cursor: pointer;
+}
+
+input, textarea, select {
+  font-family: var(--font-ui);
+}
+
+/* ─── STAGE: scales phone to viewport ─── */
+.stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--dn-2);
+  position: relative;
+  overflow: hidden;
+}
+
+.stage-bg-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-brand);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  font-size: 120px;
+  color: rgba(255,255,255,.03);
+  user-select: none;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ─── PHONE FRAME ─── */
+.phone-frame {
+  width: var(--mf-width);
+  height: var(--mf-height);
+  border-radius: var(--r40);
+  overflow: hidden;
+  box-shadow: var(--shadow-phone);
+  position: relative;
+  background: var(--ow);
+  flex-shrink: 0;
+}
+
+/* ─── SCREEN ─── */
+.screen-container {
+  position: absolute;
+  inset: 0;
+  background: var(--ow);
+  will-change: transform;
+  overflow-y: auto;
+}
+
+.screen-inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── WEB FRAME ─── */
+.web-frame {
+  width: 100%;
+  max-width: 1100px;
+  background: var(--wh);
+  border-radius: var(--r12);
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0,0,0,.4);
+}
+
+/* ─── ROLE INDICATOR ─── */
+.role-indicator {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,.1);
+  backdrop-filter: blur(8px);
+  border-radius: var(--r12);
+  padding: 8px 14px;
+  border: 1px solid rgba(255,255,255,.15);
+}
+
+/* ─── SCROLLBARS ─── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sl-2);
+}

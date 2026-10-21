@@ -1,0 +1,63 @@
+/* AlterNote — Design Tokens */
+:root {
+  /* Brand Colors */
+  --cr: #d9385e;          /* Crimson Rose — primary/brand */
+  --cr-soft: #fef2f4;     /* Rose soft background */
+  --cr-hover: #c4304f;    /* Rose hover state */
+
+  /* Neutrals */
+  --dn: #0f172a;          /* Deep Navy — headings, text */
+  --dn-2: #1e293b;        /* Navy 2 — sidebar bg */
+  --ow: #fdfbf7;          /* Off-White — mobile frame bg */
+  --wh: #ffffff;          /* White — cards, inputs */
+  --sl: #64748b;          /* Slate — secondary text */
+  --sl-2: #94a3b8;        /* Slate 2 — muted text */
+
+  /* UI Backgrounds */
+  --bg: #f1f5f9;          /* Page background, input bg */
+  --bg-2: #f8fafc;        /* Slightly lighter bg */
+
+  /* Border */
+  --border: #e2e8f0;
+  --border-focus: var(--cr);
+
+  /* Status Colors */
+  --success: #10b981;
+  --success-bg: #ecfdf5;
+  --success-text: #059669;
+  --warning: #f59e0b;
+  --warning-bg: #fffbeb;
+  --warning-text: #d97706;
+  --danger: #ef4444;
+  --danger-bg: #fef2f4;
+  --danger-text: #be123c;
+  --info-bg: #eff6ff;
+  --info-text: #2563eb;
+
+  /* Border Radius */
+  --r6: 6px;
+  --r8: 8px;
+  --r10: 10px;
+  --r11: 11px;
+  --r12: 12px;
+  --r14: 14px;
+  --r16: 16px;
+  --r18: 18px;
+  --r20: 20px;
+  --r40: 40px;
+
+  /* Typography */
+  --font-ui: 'DM Sans', sans-serif;
+  --font-brand: 'Hanken Grotesk', sans-serif;
+  --font-display: 'DM Serif Display', serif;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-phone: 0 25px 60px rgba(0,0,0,.4), 0 0 0 8px #0f172a;
+  --shadow-fab: 0 4px 14px rgba(217,56,94,.4);
+  --shadow-modal: 0 20px 60px rgba(0,0,0,.3);
+
+  /* Mobile Frame */
+  --mf-width: 390px;
+  --mf-height: 844px;
+}
